@@ -56,7 +56,7 @@ GitHub Pages, served from the `docs/` folder on the `main` branch of `a-petty/fo
   domain is attached, GitHub redirects this URL to `https://foundate.ai/`.
 - Production: `https://foundate.ai/` and `https://www.foundate.ai/`, with the
   certificate issued and renewed by GitHub.
-- No analytics, no contact form, no third-party requests; the contact link is `mailto:alexander@foundate.ai`.
+- No analytics, no contact form, no third-party requests; the contact link is `mailto:info@foundate.ai`.
 
 ## DNS
 
