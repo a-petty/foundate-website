@@ -10,7 +10,10 @@ GitHub Pages publishes only the `docs/` folder. Everything else in the repo
 
 | Path | What it is |
 | --- | --- |
-| `docs/index.html`, `docs/styles.css` | The page. Copy edits happen in `index.html`; design tokens sit at the top of `styles.css`. |
+| `docs/index.html` | Home: hero, proof, where the value is, two featured cases, method summary, ownership, contact. |
+| `docs/work/index.html` | Work (foundate.ai/work/): every project with how it was proven. |
+| `docs/how-we-work/index.html` | How we work (foundate.ai/how-we-work/): lessons, method and rules, what you keep, engagements. |
+| `docs/styles.css` | All styles; design tokens at the top. |
 | `docs/assets/fonts/` | Geist and Geist Mono variable fonts, self-hosted under the SIL Open Font License (`OFL.txt`). No third-party font service. |
 | `docs/assets/og-image.jpg` | 1200×630 social preview used by LinkedIn, Slack, iMessage, etc. |
 | `docs/assets/apple-touch-icon.png`, `favicon-32.png`, `icon-*.png` | Icons. The SVG favicon is inline in `index.html`. |
@@ -18,6 +21,9 @@ GitHub Pages publishes only the `docs/` folder. Everything else in the repo
 | `docs/robots.txt`, `docs/sitemap.xml`, `docs/manifest.webmanifest` | Crawler and install metadata. |
 | `docs/CNAME`, `docs/.nojekyll` | Custom domain, and "serve files exactly as committed". |
 | `tools/make_images.py` | Regenerates the social preview and icons from the source artwork PNG. |
+
+The header and footer are repeated in each page; change all three together.
+Asset and page links are root-absolute (`/styles.css`, `/work/`).
 
 Every claim on the page about past work must be supported by the claims
 register that lives with the design source, outside this public repository.
