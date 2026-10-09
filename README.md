@@ -13,6 +13,7 @@ GitHub Pages publishes only the `docs/` folder. Everything else in the repo
 | `docs/index.html` | Home: hero, proof, where the value is, two featured cases, method summary, ownership, contact. |
 | `docs/work/index.html` | Work (foundate.ai/work/): every project with how it was proven. |
 | `docs/how-we-work/index.html` | How we work (foundate.ai/how-we-work/): lessons, method and rules, what you keep, engagements. |
+| `docs/about/index.html` | About (foundate.ai/about/): why we exist, beliefs, how we are built, the two Managing Partners, the name. |
 | `docs/styles.css` | All styles; design tokens at the top. |
 | `docs/assets/fonts/` | Geist and Geist Mono variable fonts, self-hosted under the SIL Open Font License (`OFL.txt`). No third-party font service. |
 | `docs/assets/og-image.jpg` | 1200×630 social preview used by LinkedIn, Slack, iMessage, etc. |
@@ -22,7 +23,7 @@ GitHub Pages publishes only the `docs/` folder. Everything else in the repo
 | `docs/CNAME`, `docs/.nojekyll` | Custom domain, and "serve files exactly as committed". |
 | `tools/make_images.py` | Regenerates the social preview and icons from the source artwork PNG. |
 
-The header and footer are repeated in each page; change all three together.
+The header and footer are repeated in each page; change all four together.
 Asset and page links are root-absolute (`/styles.css`, `/work/`).
 
 Every claim on the page about past work must be supported by the claims

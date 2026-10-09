@@ -240,3 +240,23 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
   .site-nav ul{gap:6px 22px}
 }
 .page-head + .section{padding-top:clamp(16px,2vw,32px)}
+
+/* About page */
+.statement{background:var(--surface);border-block:1px solid var(--line)}
+.statement-inner{display:flex;flex-wrap:wrap;gap:32px 64px;padding-block:clamp(64px,8vw,112px)}
+.statement-head{flex:0 1 380px;min-width:0}
+.statement-title{font-size:clamp(30px,3.4vw,46px);font-weight:600;line-height:1.06;letter-spacing:-.035em}
+.method .statement-title{color:#fff}
+.statement-body{flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:18px;color:var(--ink-2)}
+.statement-body--night{color:var(--night-text)}
+.beliefs-title,.partners-title{max-width:900px;margin-bottom:48px}
+.partners{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
+.partner{flex:1 1 440px;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(28px,3.4vw,44px)}
+.partner-name{font-size:clamp(28px,2.8vw,38px);font-weight:600;letter-spacing:-.03em;line-height:1.08}
+.partner-role{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.partner-bio{margin-top:24px;padding-top:22px;border-top:1px solid var(--line-2);display:flex;flex-direction:column;gap:14px;color:var(--ink-2)}
+.name-band{border-top:1px solid var(--line)}
+.name-inner{padding-block:clamp(64px,8vw,104px)}
+.name-title{font-size:clamp(40px,5vw,72px);font-weight:600;letter-spacing:-.045em;line-height:1;margin-bottom:22px}
+.name-title span{font-family:var(--mono);font-size:.32em;font-weight:400;letter-spacing:0;color:var(--muted);vertical-align:middle;margin-left:12px}
+.name-def{max-width:680px;font-size:clamp(18px,1.6vw,21px);color:var(--ink-2)}
