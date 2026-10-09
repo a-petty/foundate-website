@@ -8,8 +8,8 @@ for a while and nothing here is still open.
 
 - Staging is live at <https://a-petty.github.io/foundate-website/> (same files as `main`).
 - `https://foundate.ai` and `https://www.foundate.ai` still point at the old host and answer **401** to the public.
-- Google Workspace mail on the domain is fully configured and must survive the cutover untouched.
-- Cutover is waiting on the owner's go-ahead.
+- Google Workspace mail on the domain is fully configured, Gmail is activated, and delivery to alexander@foundate.ai is confirmed (owner, 2026-10-09). The mail records must survive the cutover untouched.
+- Cutover approved by the owner on 2026-10-09; DMARC (`p=none`) approved for the same edit.
 
 ### DNS snapshot before cutover (public resolver, 2026-10-09)
 
@@ -50,6 +50,7 @@ Host values are relative to `foundate.ai`; do not append the domain.
 | AAAA | `@` | `2606:50c0:8002::153` |
 | AAAA | `@` | `2606:50c0:8003::153` |
 | CNAME | `www` | `a-petty.github.io.` |
+| TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:alexander@foundate.ai` |
 
 **3. Leave every other record alone**: MX, the three `@` TXT records (SPF, Google verification, Anthropic verification) and `google._domainkey`.
 
@@ -96,18 +97,14 @@ social preview renders.
   (`_github-pages-challenge-a-petty`) at Namecheap.
 - **Retire the old host.** Delete the OpenAI Sites project from the ChatGPT
   account that created it. The DNS records for it are already gone after step 1.
-- **DMARC.** Mail is authenticated (SPF + DKIM) but has no policy record.
-  Suggested first record, monitoring only:
-  `TXT _dmarc "v=DMARC1; p=none; rua=mailto:alexander@foundate.ai"`.
-  Tighten to `p=quarantine` after a few weeks of clean reports.
+- **DMARC.** Added at cutover with `p=none` (monitoring only). Tighten to
+  `p=quarantine` after a few weeks of clean aggregate reports.
 - **Search Console** (optional): add the property and submit `https://foundate.ai/sitemap.xml`.
 
 ## Open items not covered by this runbook
 
-- A copy change was paused before the hosting move: reframing the two
-  featured "Being finalized" projects (AI Chief of Staff, reporting automation
-  hub) as completed. It has **not** been applied; the page still says
-  "What we're building". This is the owner's call and is a normal edit-and-push
-  once decided.
+- The copy change reframing the two featured projects as completed is
+  drafted in [PR #1](https://github.com/a-petty/foundate-website/pull/1).
+  Merging it publishes it.
 - No analytics and no contact form on the site today. Both are deliberate
   omissions for launch, not oversights.
