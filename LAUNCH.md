@@ -100,12 +100,10 @@ social preview renders.
 
 ## After launch
 
-- [ ] **Verify the domain on the GitHub account** so nobody else can claim it on
+- [x] **Verify the domain on the GitHub account** (verified 2026-10-09) so nobody else can claim it on
   GitHub Pages if the repo is ever removed: GitHub → Settings → Pages →
   *Verified domains* → add `foundate.ai`, then add the TXT record it gives you
   (`_github-pages-challenge-a-petty`) at Namecheap.
-  *2026-10-09: the challenge TXT is published at Namecheap and answers on the
-  authoritative nameserver; only the Verify click on GitHub remains.*
 - [ ] **Retire the old host.** Delete the OpenAI Sites project from the ChatGPT
   account that created it. The DNS records for it are already gone after step 1.
 - [x] **DMARC.** Added at cutover with `p=none` (monitoring only).
