@@ -1,6 +1,9 @@
-"""Generate optimized hero, OG image and icons for the Foundate site.
+"""Generate the social preview image (og-image.jpg) and icons for the Foundate site.
 
-Usage: python -I make_images.py <source_png> <out_assets_dir>
+The source PNG is the original "foundations" artwork; it appears only in the
+right half of the social preview.
+
+Usage: uv run --with pillow python -I tools/make_images.py <source_png> <out_assets_dir>
 """
 import sys
 from pathlib import Path
@@ -20,11 +23,7 @@ hero = Image.open(src).convert("RGB")
 w, h = hero.size
 print(f"source {w}x{h}")
 
-# 1. Hero: WebP primary + JPEG fallback, same dimensions.
-hero.save(out / "foundations.webp", "WEBP", quality=82, method=6)
-hero.save(out / "foundations.jpg", "JPEG", quality=85, optimize=True, progressive=True)
-
-# 2. Open Graph image 1200x630: dark panel with wordmark on the left, art on the right.
+# 1. Open Graph image 1200x630: dark panel with wordmark on the left, art on the right.
 OG_W, OG_H = 1200, 630
 og = Image.new("RGB", (OG_W, OG_H), DARK)
 # right panel: art cropped to 600x630
@@ -65,15 +64,15 @@ by = 212
 draw.rounded_rectangle((bx, by, bx + 54, by + 40), radius=6, outline=PAPER, width=2)
 draw.text((bx + 27, by + 20), "AI", font=badge_font, fill=PAPER, anchor="mm")
 # tagline
-tag = font(34, bold=False)
-draw.text((x, 330), "AI transformation,", font=tag, fill=ACCENT)
-draw.text((x, 372), "implemented.", font=tag, fill=ACCENT)
+tag = font(40, bold=True)
+draw.text((x, 322), "AI you can", font=tag, fill=ACCENT)
+draw.text((x, 370), "sign off on.", font=tag, fill=ACCENT)
 sub = font(22, bold=False)
-draw.text((x, 450), "Practical AI. Built for your business.", font=sub, fill=(0xB4, 0xC1, 0xB9))
-draw.text((x, 482), "foundate.ai", font=sub, fill=(0xB4, 0xC1, 0xB9))
+draw.text((x, 452), "AI implementation, proven before it ships.", font=sub, fill=(0xB4, 0xC1, 0xB9))
+draw.text((x, 484), "foundate.ai", font=sub, fill=(0xB4, 0xC1, 0xB9))
 og.save(out / "og-image.jpg", "JPEG", quality=88, optimize=True, progressive=True)
 
-# 3. Icons from the favicon SVG geometry (32-unit canvas): rounded rect + "F" glyph.
+# 2. Icons from the favicon SVG geometry (32-unit canvas): rounded rect + "F" glyph.
 F_PATH = [(9, 8), (25, 8), (25, 13), (14, 13), (14, 17), (22, 17), (22, 22), (14, 22), (14, 27), (9, 27)]
 
 

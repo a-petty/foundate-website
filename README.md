@@ -7,14 +7,17 @@ third-party services. Pushing to `main` publishes it.
 
 | Path | What it is |
 | --- | --- |
-| `index.html`, `styles.css` | The page. Copy edits happen in `index.html`. |
-| `assets/foundations.webp`, `assets/foundations.jpg` | Hero artwork (WebP, with a JPEG fallback). |
+| `index.html`, `styles.css` | The page. Copy edits happen in `index.html`; design tokens sit at the top of `styles.css`. |
+| `assets/fonts/` | Geist and Geist Mono variable fonts, self-hosted under the SIL Open Font License (`OFL.txt`). No third-party font service. |
 | `assets/og-image.jpg` | 1200×630 social preview used by LinkedIn, Slack, iMessage, etc. |
 | `assets/apple-touch-icon.png`, `assets/favicon-32.png`, `assets/icon-*.png` | Icons. The SVG favicon is inline in `index.html`. |
 | `404.html` | Not-found page. Self-contained so it renders at any path. |
 | `robots.txt`, `sitemap.xml`, `manifest.webmanifest` | Crawler and install metadata. |
-| `tools/make_images.py` | Regenerates every derived image from the source hero PNG. |
+| `tools/make_images.py` | Regenerates the social preview and icons from the source artwork PNG. |
 | `.nojekyll` | Tells GitHub Pages to serve the files exactly as committed. |
+
+Every claim on the page about past work must be supported by the claims
+register that lives with the design source, outside this public repository.
 
 ## Edit and publish
 
@@ -33,13 +36,12 @@ third-party services. Pushing to `main` publishes it.
 Every published state of the site is a commit, so `git log` is the site's
 change history. There is nothing to roll back except `git revert`.
 
-When the hero artwork changes, drop the new source PNG anywhere and run:
+When the social preview needs new text or art, edit `tools/make_images.py`
+and run:
 
 ```sh
 uv run --with pillow python -I tools/make_images.py path/to/source.png assets/
 ```
-
-It rewrites the WebP, JPEG, social preview and icons in one pass.
 
 ## Hosting
 
@@ -49,7 +51,7 @@ GitHub Pages, served from the `main` branch root of `a-petty/foundate-website`.
   domain is attached, GitHub redirects this URL to `https://foundate.ai/`.
 - Production: `https://foundate.ai/` and `https://www.foundate.ai/`, with the
   certificate issued and renewed by GitHub.
-- No analytics, no contact form; the contact link is `mailto:alexander@foundate.ai`.
+- No analytics, no contact form, no third-party requests; the contact link is `mailto:alexander@foundate.ai`.
 
 ## DNS
 
