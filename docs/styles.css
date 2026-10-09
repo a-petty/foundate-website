@@ -199,3 +199,28 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
   html{scroll-behavior:auto}
   *,*::before,*::after{transition:none!important}
 }
+
+/* Where the value is */
+.value{padding-top:clamp(72px,9vw,128px)}
+.value .h2{max-width:900px;margin-bottom:48px}
+.tiers{display:flex;flex-wrap:wrap;gap:20px;align-items:stretch}
+.tier{flex:1 1 260px;min-width:0;border:1px solid var(--line);border-radius:var(--radius);padding:30px;background:var(--surface);display:flex;flex-direction:column;gap:12px}
+.tier-label{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tier h3{font-size:26px;font-weight:600;letter-spacing:-.025em;line-height:1.15}
+.tier p:last-child{font-size:16px;color:var(--ink-2)}
+.tier--prize{flex-grow:1.6;background:var(--night-2);border-color:var(--night-2);color:#e9eee5}
+.tier--prize .tier-label{color:var(--accent)}
+.tier--prize h3{color:#fff;font-size:clamp(28px,2.6vw,34px)}
+.tier--prize p:last-child{color:var(--night-soft)}
+
+/* What you keep */
+.ownership{background:var(--surface);border-bottom:1px solid var(--line)}
+.ownership-head{max-width:980px;margin-bottom:52px}
+.ownership-head .h2{margin-bottom:22px}
+.ownership-lede{font-size:clamp(18px,1.6vw,21px);color:var(--ink-2);max-width:720px}
+.keep-grid{display:flex;flex-wrap:wrap;gap:40px 64px}
+.keep-col{flex:1 1 400px;min-width:0;border-top:2px solid var(--ink);padding-top:22px}
+.keep-col h3{font-size:22px;font-weight:600;letter-spacing:-.02em;margin-bottom:12px}
+.keep-list li{padding:12px 0;border-bottom:1px solid var(--line-2)}
+.keep-list li:last-child{border-bottom:0}
+.keep-col p{color:var(--ink-2)}
