@@ -112,8 +112,8 @@ social preview renders.
 
 ## Open items not covered by this runbook
 
-- The copy change reframing the two featured projects as completed is
-  drafted in [PR #1](https://github.com/a-petty/foundate-website/pull/1).
-  Merging it publishes it.
+- The copy change reframing the two featured projects as completed was
+  reviewed in [PR #1](https://github.com/a-petty/foundate-website/pull/1)
+  and merged on 2026-10-09; it is live.
 - No analytics and no contact form on the site today. Both are deliberate
   omissions for launch, not oversights.
