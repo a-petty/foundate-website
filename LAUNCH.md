@@ -4,12 +4,21 @@ One-time cutover from the previous host (OpenAI Sites, owner-private) to
 GitHub Pages. Delete this file once the site has been live on GitHub Pages
 for a while and nothing here is still open.
 
-## State on 2026-10-09
+## Status: CUTOVER COMPLETE (2026-10-09, ~11:55 America/Los_Angeles)
 
-- Staging is live at <https://a-petty.github.io/foundate-website/> (same files as `main`).
-- `https://foundate.ai` and `https://www.foundate.ai` still point at the old host and answer **401** to the public.
-- Google Workspace mail on the domain is fully configured, Gmail is activated, and delivery to alexander@foundate.ai is confirmed (owner, 2026-10-09). The mail records must survive the cutover untouched.
-- Cutover approved by the owner on 2026-10-09; DMARC (`p=none`) approved for the same edit.
+- `https://foundate.ai/` serves the site from GitHub Pages (HTTP 200, certificate issued by Let's Encrypt, HTTPS enforced).
+- `https://www.foundate.ai/` → 301 → `https://foundate.ai/`; `http://` → 301 → `https://`; the old staging URL `https://a-petty.github.io/foundate-website/` → 301 → `https://foundate.ai/`.
+- Namecheap edit done through the desktop app's browser pane with the owner logged in: seven old-host records removed (each delete returned 200), ten records added. Namecheap's authoritative server `pdns1.registrar-servers.com` was queried directly afterwards and returned exactly the intended set, with every Google Workspace record and the Anthropic verification TXT untouched.
+- DMARC `_dmarc TXT "v=DMARC1; p=none; rua=mailto:alexander@foundate.ai"` added in the same edit.
+- Mail delivery to alexander@foundate.ai was confirmed by the owner before the cutover.
+
+The sections below are kept as the record of what was done and what remains.
+
+## State before cutover (2026-10-09 morning)
+
+- Staging was live at <https://a-petty.github.io/foundate-website/> (same files as `main`).
+- `https://foundate.ai` and `https://www.foundate.ai` pointed at the old host and answered **401** to the public.
+- Google Workspace mail on the domain was fully configured and Gmail activated.
 
 ### DNS snapshot before cutover (public resolver, 2026-10-09)
 
@@ -91,15 +100,15 @@ social preview renders.
 
 ## After launch
 
-- **Verify the domain on the GitHub account** so nobody else can claim it on
+- [ ] **Verify the domain on the GitHub account** so nobody else can claim it on
   GitHub Pages if the repo is ever removed: GitHub → Settings → Pages →
   *Verified domains* → add `foundate.ai`, then add the TXT record it gives you
   (`_github-pages-challenge-a-petty`) at Namecheap.
-- **Retire the old host.** Delete the OpenAI Sites project from the ChatGPT
+- [ ] **Retire the old host.** Delete the OpenAI Sites project from the ChatGPT
   account that created it. The DNS records for it are already gone after step 1.
-- **DMARC.** Added at cutover with `p=none` (monitoring only). Tighten to
-  `p=quarantine` after a few weeks of clean aggregate reports.
-- **Search Console** (optional): add the property and submit `https://foundate.ai/sitemap.xml`.
+- [x] **DMARC.** Added at cutover with `p=none` (monitoring only).
+- [ ] Tighten DMARC to `p=quarantine` after a few weeks of clean aggregate reports.
+- [ ] **Search Console** (optional): add the property and submit `https://foundate.ai/sitemap.xml`.
 
 ## Open items not covered by this runbook
 
