@@ -5,19 +5,24 @@ third-party services. Pushing to `main` publishes it.
 
 ## Layout
 
+GitHub Pages publishes only the `docs/` folder. Everything else in the repo
+(this README, `LAUNCH.md`, `tools/`) stays in the repo and is not served.
+
 | Path | What it is |
 | --- | --- |
-| `index.html`, `styles.css` | The page. Copy edits happen in `index.html`; design tokens sit at the top of `styles.css`. |
-| `assets/fonts/` | Geist and Geist Mono variable fonts, self-hosted under the SIL Open Font License (`OFL.txt`). No third-party font service. |
-| `assets/og-image.jpg` | 1200×630 social preview used by LinkedIn, Slack, iMessage, etc. |
-| `assets/apple-touch-icon.png`, `assets/favicon-32.png`, `assets/icon-*.png` | Icons. The SVG favicon is inline in `index.html`. |
-| `404.html` | Not-found page. Self-contained so it renders at any path. |
-| `robots.txt`, `sitemap.xml`, `manifest.webmanifest` | Crawler and install metadata. |
+| `docs/index.html`, `docs/styles.css` | The page. Copy edits happen in `index.html`; design tokens sit at the top of `styles.css`. |
+| `docs/assets/fonts/` | Geist and Geist Mono variable fonts, self-hosted under the SIL Open Font License (`OFL.txt`). No third-party font service. |
+| `docs/assets/og-image.jpg` | 1200×630 social preview used by LinkedIn, Slack, iMessage, etc. |
+| `docs/assets/apple-touch-icon.png`, `favicon-32.png`, `icon-*.png` | Icons. The SVG favicon is inline in `index.html`. |
+| `docs/404.html` | Not-found page. Self-contained so it renders at any path. |
+| `docs/robots.txt`, `docs/sitemap.xml`, `docs/manifest.webmanifest` | Crawler and install metadata. |
+| `docs/CNAME`, `docs/.nojekyll` | Custom domain, and "serve files exactly as committed". |
 | `tools/make_images.py` | Regenerates the social preview and icons from the source artwork PNG. |
-| `.nojekyll` | Tells GitHub Pages to serve the files exactly as committed. |
 
 Every claim on the page about past work must be supported by the claims
 register that lives with the design source, outside this public repository.
+Public copy uses generalized wording: no exact counts, client-identifying team
+names or internal findings.
 
 ## Edit and publish
 
@@ -25,7 +30,7 @@ register that lives with the design source, outside this public repository.
 2. Preview locally:
 
    ```sh
-   python3 -m http.server 8765 --bind 127.0.0.1
+   python3 -m http.server 8765 --bind 127.0.0.1 --directory docs
    ```
 
    then open <http://127.0.0.1:8765/>. Check desktop and a ~390px-wide
@@ -40,12 +45,12 @@ When the social preview needs new text or art, edit `tools/make_images.py`
 and run:
 
 ```sh
-uv run --with pillow python -I tools/make_images.py path/to/source.png assets/
+uv run --with pillow python -I tools/make_images.py path/to/source.png docs/assets/
 ```
 
 ## Hosting
 
-GitHub Pages, served from the `main` branch root of `a-petty/foundate-website`.
+GitHub Pages, served from the `docs/` folder on the `main` branch of `a-petty/foundate-website`.
 
 - Staging URL: <https://a-petty.github.io/foundate-website/>. Once the custom
   domain is attached, GitHub redirects this URL to `https://foundate.ai/`.
