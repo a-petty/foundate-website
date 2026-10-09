@@ -57,6 +57,10 @@ GitHub Pages, served from the `docs/` folder on the `main` branch of `a-petty/fo
 - Production: `https://foundate.ai/` and `https://www.foundate.ai/`, with the
   certificate issued and renewed by GitHub.
 - No analytics, no contact form, no third-party requests; the contact link is `mailto:info@foundate.ai`.
+- Changing the Pages source folder does not trigger a rebuild. After any
+  change to Pages settings, request one:
+  `gh api -X POST repos/a-petty/foundate-website/pages/builds`.
+  Pages also caches pages for up to 10 minutes, so check with a `?x=…` query.
 
 ## DNS
 
