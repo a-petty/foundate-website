@@ -3,7 +3,7 @@
 The source PNG is the original "foundations" artwork; it appears only in the
 right half of the social preview.
 
-Usage: uv run --with pillow python -I tools/make_images.py <source_png> <out_assets_dir>
+Usage: uv run --with pillow python -I tools/make_images.py <source_png> docs/assets
 """
 import sys
 from pathlib import Path
