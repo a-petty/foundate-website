@@ -72,56 +72,6 @@
       </div>
     </section>
 
-    <section id="standard" class="method" aria-labelledby="method-title">
-      <div class="wrap section">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">The standard</p>
-            <h2 id="method-title" class="h2">Six things that have to be true before we call it done.</h2>
-          </div>
-          <p>Not a process chart. Six conditions, each checkable, that a system meets before anyone relies on it.</p>
-        </div>
-        <ul class="conds">
-          <li class="cond"><svg class="tick" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="10"/><path d="M6.6 11.3l2.9 2.9 5.9-6" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>It reproduces results you already trust.</h3><p>Your last signed-off period is the answer key. Every difference is accounted for. Zero unexplained is the bar.</p><p class="cond-proof">A prior year’s budget and a published report, rebuilt cell for cell.</p></li>
-          <li class="cond"><svg class="tick" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="10"/><path d="M6.6 11.3l2.9 2.9 5.9-6" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Every number is calculated, never generated.</h3><p>One deterministic engine runs the checks and the live system. AI explains; it does not invent a figure.</p></li>
-          <li class="cond"><svg class="tick" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="10"/><path d="M6.6 11.3l2.9 2.9 5.9-6" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Bad inputs stop the run.</h3><p>Missing or stale data blocks the result. The checks are never loosened to get a pass.</p><p class="cond-proof">A payout run that halted on two missing inputs.</p></li>
-          <li class="cond"><svg class="tick" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="10"/><path d="M6.6 11.3l2.9 2.9 5.9-6" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Someone who did not build it tries to break it.</h3><p>A separate reviewer recomputes every output and attacks each conclusion before go-live.</p><p class="cond-proof">On one build, dozens of issues found and fixed before anyone saw a figure.</p></li>
-          <li class="cond"><svg class="tick" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="10"/><path d="M6.6 11.3l2.9 2.9 5.9-6" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Its limits are written down.</h3><p>What the checks cannot see is stated at handover. “We cannot explain this yet” is an acceptable answer. A guess is not.</p></li>
-          <li class="cond"><svg class="tick" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="10"/><path d="M6.6 11.3l2.9 2.9 5.9-6" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>A named owner has run it without us.</h3><p>Done means your team has made a change and fixed a problem themselves. If it still needs us, it is not done.</p></li>
-        </ul>
-        <p class="cond-closing">If a result cannot be checked, we say so and do not build it.</p>
-          <figure class="method-example">
-          <figcaption class="method-caption">What the standard looks like in practice: the release check before a monthly report is published, and a payout run that stopped itself.</figcaption>
-          <div class="check-card">
-            <div class="check-head">
-              <div>
-                <p class="check-kicker">Release check</p>
-                <p class="check-title">Monthly report</p>
-              </div>
-              <span class="status status--live">Ready for review</span>
-            </div>
-            <ul class="check-list">
-              <li><svg class="tick" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="10"/><path d="M6.6 11.3l2.9 2.9 5.9-6" fill="none" stroke="#f5f2eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="check-label">Business rules written down</span><span class="check-value">Reviewed</span></li>
-              <li><svg class="tick" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="10"/><path d="M6.6 11.3l2.9 2.9 5.9-6" fill="none" stroke="#f5f2eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="check-label">Rebuilt a published report, cell for cell</span><span class="check-value">Matched</span></li>
-              <li><svg class="tick" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="10"/><path d="M6.6 11.3l2.9 2.9 5.9-6" fill="none" stroke="#f5f2eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="check-label">Unexplained differences</span><span class="check-value">None</span></li>
-              <li><svg class="tick" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="10"/><path d="M6.6 11.3l2.9 2.9 5.9-6" fill="none" stroke="#f5f2eb" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="check-label">Errors found in the old workbook</span><span class="check-value">Documented</span></li>
-              <li class="check-pending"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="9.25" fill="none" stroke="#1c1b18" stroke-width="1.5" stroke-dasharray="3 2.6"/></svg><span class="check-label">Approval to publish</span><span class="check-value">Waiting</span></li>
-            </ul>
-            <div class="check-foot">
-              <p>Approver: <strong>Report owner</strong></p>
-              <span class="fake-button" aria-hidden="true">Approve and publish</span>
-            </div>
-          </div>
-          <div class="held-card">
-            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true" focusable="false"><path class="alert" d="M11 3l9 16H2L11 3z" stroke-width="1.6" stroke-linejoin="round"/><path class="alert" d="M11 9v4.5M11 16v.5" stroke-width="1.8" stroke-linecap="round"/></svg>
-            <div>
-              <p class="held-title">Payout file held: quarterly bonus run</p>
-              <p class="held-text">Two required inputs are missing. The system stops and says so instead of guessing.</p>
-            </div>
-          </div>
-          </figure>
-      </div>
-    </section>
 
     <section id="ownership" class="ownership" aria-labelledby="ownership-title">
       <div class="wrap section">
@@ -161,7 +111,7 @@
       <ol class="cards">
         <li class="card"><p class="card-step">Step 1</p><h3>Working session</h3><p>Bring the process that takes too long or cannot be trusted. We map it with you and tell you plainly whether it is worth automating.</p></li>
         <li class="card"><p class="card-step">Step 2</p><h3>Build and prove</h3><p>We build the system and prove it against your own history, with every difference explained, before anyone relies on it.</p></li>
-        <li class="card"><p class="card-step">Step 3</p><h3>Hand over, then decide what comes next</h3><p>Your team takes the system, the runbook and the approvals. Then we decide together what comes next. Each process gets its own proof; nothing is copied across.</p></li>
+        <li class="card"><p class="card-step">Step 3</p><h3>Hand over, then decide what comes next</h3><p>Your team takes the system, then we decide what comes next.</p></li>
       </ol>
     </section>
 

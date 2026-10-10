@@ -10,9 +10,9 @@ GitHub Pages publishes only the `docs/` folder. Everything else in the repo
 
 | Path | What it is |
 | --- | --- |
-| `docs/index.html` | Home: hero, proof, where the value is, two featured cases, method summary, ownership, contact. |
+| `docs/index.html` | Home: hero, where the value is, two featured cases, ownership, contact. |
 | `docs/work/index.html` | Work (foundate.ai/work/): every project with how it was proven. |
-| `docs/how-we-work/index.html` | How we work (foundate.ai/how-we-work/): lessons, method and rules, what you keep, engagements. |
+| `docs/how-we-work/index.html` | How we work (foundate.ai/how-we-work/): lessons, what you keep, where we build, engagements. |
 | `docs/about/index.html` | About (foundate.ai/about/): why we exist, beliefs, how we are built, the two Managing Partners, the name. |
 | `docs/styles.css` | All styles; design tokens at the top. |
 | `docs/assets/fonts/` | Zilla Slab (headlines and wordmark), IBM Plex Sans (text, one variable file) and IBM Plex Mono (data), Latin subsets, self-hosted under the SIL Open Font License (`OFL.txt`). No third-party font service. |
