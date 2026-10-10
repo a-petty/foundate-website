@@ -103,8 +103,8 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 .credit{flex-basis:100%;font-size:12px;line-height:1.5;color:var(--muted)}
 .credit a{text-decoration:underline;text-underline-offset:3px}
 .hero--photo .eyebrow{color:var(--green-soft)}
-.hero--photo h1{color:var(--paper);max-width:12ch}
-.hero--photo .lede{color:#dfe8e1}
+.hero--photo h1{color:var(--paper);max-width:15ch;font-size:clamp(40px,5.2vw,74px)}
+.hero--photo .lede{color:#dfe8e1;max-width:600px}
 .hero--photo .button{background:var(--paper);color:var(--green)}
 .hero--photo .button:hover{background:#fff;color:var(--green)}
 .hero--photo .text-link{color:var(--paper)}
