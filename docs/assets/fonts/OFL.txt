@@ -1,6 +1,9 @@
-Copyright (c) 2023 Vercel, in collaboration with basement.studio
+Zilla Slab: Copyright 2017 The Mozilla Foundation (https://github.com/mozilla/zilla-slab)
+IBM Plex Sans and IBM Plex Mono: Copyright 2017 IBM Corp. (https://github.com/IBM/plex)
 
-This Font Software is licensed under the SIL Open Font License, Version 1.1.
+These Font Software files are licensed under the SIL Open Font License, Version 1.1.
+Each project's own OFL.txt lists its Reserved Font Names. The files here are
+the Latin subsets served by Google Fonts, unmodified.
 This license is copied below, and is also available with a FAQ at:
 http://scripts.sil.org/OFL
 

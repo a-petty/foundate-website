@@ -15,13 +15,13 @@ GitHub Pages publishes only the `docs/` folder. Everything else in the repo
 | `docs/how-we-work/index.html` | How we work (foundate.ai/how-we-work/): lessons, method and rules, what you keep, engagements. |
 | `docs/about/index.html` | About (foundate.ai/about/): why we exist, beliefs, how we are built, the two Managing Partners, the name. |
 | `docs/styles.css` | All styles; design tokens at the top. |
-| `docs/assets/fonts/` | Geist and Geist Mono variable fonts, self-hosted under the SIL Open Font License (`OFL.txt`). No third-party font service. |
+| `docs/assets/fonts/` | Zilla Slab (headlines and wordmark), IBM Plex Sans (text, one variable file) and IBM Plex Mono (data), Latin subsets, self-hosted under the SIL Open Font License (`OFL.txt`). No third-party font service. |
 | `docs/assets/og-image.jpg` | 1200×630 social preview used by LinkedIn, Slack, iMessage, etc. |
 | `docs/assets/apple-touch-icon.png`, `favicon-32.png`, `icon-*.png` | Icons. The SVG favicon is inline in `index.html`. |
 | `docs/404.html` | Not-found page. Self-contained so it renders at any path. |
 | `docs/robots.txt`, `docs/sitemap.xml`, `docs/manifest.webmanifest` | Crawler and install metadata. |
 | `docs/CNAME`, `docs/.nojekyll` | Custom domain, and "serve files exactly as committed". |
-| `tools/make_images.py` | Regenerates the social preview and icons from the source artwork PNG. |
+| `tools/make_images.py` | Draws the social preview and icons from the site fonts and the plinth-F mark. No source artwork. |
 
 The header and footer are repeated in each page; change all four together.
 Asset and page links are root-absolute (`/styles.css`, `/work/`).
@@ -48,12 +48,16 @@ names or internal findings.
 Every published state of the site is a commit, so `git log` is the site's
 change history. There is nothing to roll back except `git revert`.
 
-When the social preview needs new text or art, edit `tools/make_images.py`
+When the social preview or icons need to change, edit `tools/make_images.py`
 and run:
 
 ```sh
-uv run --with pillow python -I tools/make_images.py path/to/source.png docs/assets/
+uv run --with pillow python -I tools/make_images.py docs/assets/fonts docs/assets/
 ```
+
+The identity (deep green on warm paper, Zilla Slab, IBM Plex) was decided on
+2026-10-09. Its design source, the comparison board and the decision record
+live outside this public repo in `~/Dev/Foundate/design/`.
 
 ## Hosting
 
