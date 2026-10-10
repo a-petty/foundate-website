@@ -111,13 +111,6 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 .hero--photo a:focus-visible{outline-color:var(--paper)}
 @media (max-width:640px){.hero-photo::after{background:linear-gradient(180deg,rgba(30,77,59,.9) 0%,rgba(30,77,59,.82) 100%)}}
 
-/* Worked example inside the method section (How we work) */
-.method-example{margin:56px 0 0;max-width:720px}
-.method-caption{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--green-tint);margin-bottom:16px;line-height:1.6}
-.method-example .check-card{color:var(--ink)}
-.method-example .held-card{margin-left:clamp(0px,6vw,72px)}
-@media (max-width:640px){.method-example .held-card{margin-left:0}}
-
 /* Generic section scaffolding */
 .section{padding-block:clamp(72px,9vw,128px)}
 .section-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 64px;margin-bottom:52px}
@@ -160,22 +153,13 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 .ledger-proof{font-size:15px;color:var(--ink-2);line-height:1.5}
 .ledger-list .ledger-row:last-child{border-bottom:0}
 
-/* Method */
+/* Green statement band (About) */
 .method{background:var(--green);color:var(--paper)}
 .method .eyebrow{color:var(--green-tint)}
 .method .h2{color:var(--paper)}
 .method .section-head > p{color:var(--green-soft)}
 .method a:focus-visible{outline-color:var(--paper)}
-.steps{display:flex;flex-wrap:wrap;gap:36px}
-.step{flex:1 1 240px;min-width:0;border-top:1px solid var(--green-line);padding-top:24px}
-.step-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--paper);color:var(--green);font-family:var(--mono);font-size:13px;font-weight:500;margin-bottom:20px}
-.step h3{font-size:22px;font-weight:600;letter-spacing:-.015em;color:var(--paper);margin-bottom:10px}
-.step p{font-size:16px;color:var(--green-soft)}
-.rules{margin-top:64px;padding-top:36px;border-top:1px solid var(--green-line);display:flex;flex-wrap:wrap;gap:28px 64px}
-.rules h3{flex:0 1 300px;font-size:24px;font-weight:600;letter-spacing:-.015em;line-height:1.25;color:var(--paper)}
-.rules ul{flex:1 1 520px;min-width:0;font-size:18px;line-height:1.5;color:var(--paper)}
-.rules li{padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--green-line)}
-.rules li:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.more--night .text-link{color:var(--paper)}
 
 /* Where we build */
 .where{padding-top:clamp(64px,8vw,104px)}
@@ -185,7 +169,8 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 
 /* Engagements */
 .engage{padding-top:clamp(64px,8vw,112px)}
-.engage .h2{max-width:900px;margin-bottom:52px}
+.engage .h2{max-width:900px;margin-bottom:22px}
+.engage-lede{max-width:720px;font-size:clamp(17px,1.5vw,20px);color:var(--ink-2);margin-bottom:52px}
 .cards{display:flex;flex-wrap:wrap;gap:20px}
 .card{flex:1 1 300px;min-width:0;border:1px solid var(--line);border-radius:var(--radius);padding:30px;background:var(--surface);display:flex;flex-direction:column;gap:14px}
 .card-step{font-family:var(--mono);font-size:13px;color:var(--muted)}
@@ -253,7 +238,6 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 .page-title{font-family:var(--display);font-size:clamp(44px,6vw,80px);font-weight:600;line-height:1;letter-spacing:-.02em;margin-bottom:28px;max-width:1040px;text-wrap:balance}
 .page-head .lede{max-width:720px;margin-bottom:0}
 .more{margin-top:32px}
-.more--night .text-link{color:var(--paper)}
 .ownership-head--short{margin-bottom:0}
 .footer-nav{display:flex;flex-wrap:wrap;gap:8px 24px}
 .footer-nav a{text-decoration:none}
