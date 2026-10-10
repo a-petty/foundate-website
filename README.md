@@ -16,7 +16,7 @@ GitHub Pages publishes only the `docs/` folder. Everything else in the repo
 | `docs/about/index.html` | About (foundate.ai/about/): why we exist, beliefs, how we are built, the two Managing Partners, the name. |
 | `docs/styles.css` | All styles; design tokens at the top. |
 | `docs/assets/fonts/` | Zilla Slab (headlines and wordmark), IBM Plex Sans (text, one variable file) and IBM Plex Mono (data), Latin subsets, self-hosted under the SIL Open Font License (`OFL.txt`). No third-party font service. |
-| `docs/assets/hero.jpg` | Home-page hero image: a generated architectural visualization (Codex / gpt-6-astra, 2026-10-09), cropped to the central half of the render. Source renders, prompts and briefs live outside this repo in `~/Dev/Foundate/design/hero-generated/`. |
+| `docs/assets/hero.jpg` | Home-page hero: "Golden Gate Bridge and San Francisco skyline from Hawk Hill at Blue Hour" by Daniel L. Lu, Wikimedia Commons, CC BY-SA 4.0, extended about 10% at the top and bottom (edge rows stretched and blurred, no generated pixels). The footer carries the required credit, and this adaptation is itself CC BY-SA 4.0. |
 | `docs/assets/og-image.jpg` | 1200×630 social preview used by LinkedIn, Slack, iMessage, etc. |
 | `docs/assets/apple-touch-icon.png`, `favicon-32.png`, `icon-*.png` | Icons. The SVG favicon is inline in `index.html`. |
 | `docs/404.html` | Not-found page. Self-contained so it renders at any path. |
