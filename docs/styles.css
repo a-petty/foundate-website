@@ -196,7 +196,8 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 
 /* Engagements */
 .engage{padding-top:clamp(64px,8vw,112px)}
-.engage .h2{max-width:900px;margin-bottom:52px}
+.engage .h2{max-width:900px;margin-bottom:22px}
+.engage-lede{max-width:720px;font-size:clamp(17px,1.5vw,20px);color:var(--ink-2);margin-bottom:52px}
 .cards{display:flex;flex-wrap:wrap;gap:20px}
 .card{flex:1 1 300px;min-width:0;border:1px solid var(--line);border-radius:var(--radius);padding:30px;background:var(--surface);display:flex;flex-direction:column;gap:14px}
 .card-step{font-family:var(--mono);font-size:13px;color:var(--muted)}
