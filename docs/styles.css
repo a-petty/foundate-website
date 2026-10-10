@@ -93,17 +93,6 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 .held-title{font-weight:600;color:var(--paper)}
 .held-text{font-size:15px;color:var(--night-text);line-height:1.5}
 
-/* Proof band */
-.proof-band{background:var(--surface);border-block:1px solid var(--line)}
-.proof-inner{padding-block:36px 40px}
-.proof-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 32px;margin-bottom:28px}
-.proof-head h2{font-size:18px;font-weight:600;letter-spacing:-.01em}
-.proof-head p{font-family:var(--mono);font-size:13px;letter-spacing:.02em;color:var(--ink-2)}
-.stats{display:flex;flex-wrap:wrap;gap:28px 40px}
-.stat{flex:1 1 220px;min-width:0;border-top:2px solid var(--ink);padding-top:16px}
-.stat .stat-number{font-family:var(--display);font-size:clamp(30px,3.2vw,44px);font-weight:600;letter-spacing:-.012em;line-height:1.05}
-.stat-number + p{margin-top:10px;font-size:15px;line-height:1.5;color:var(--ink-2)}
-
 /* Generic section scaffolding */
 .section{padding-block:clamp(72px,9vw,128px)}
 .section-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 64px;margin-bottom:52px}
