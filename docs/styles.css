@@ -93,6 +93,27 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 .held-title{font-weight:600;color:var(--paper)}
 .held-text{font-size:15px;color:var(--night-text);line-height:1.5}
 
+/* Photographic hero (home) */
+.hero--photo{position:relative;display:block;padding:0;background:var(--green);color:var(--paper);overflow:hidden}
+.hero-photo{position:absolute;inset:0;background-image:url("assets/hero.jpg");background-size:cover;background-position:center right}
+.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(30,77,59,.94) 0%,rgba(30,77,59,.8) 38%,rgba(30,77,59,.38) 72%,rgba(30,77,59,.22) 100%)}
+.hero--photo .hero-copy{position:relative;padding-block:clamp(64px,9vw,148px)}
+.hero--photo .eyebrow{color:var(--green-soft)}
+.hero--photo h1{color:var(--paper);max-width:12ch}
+.hero--photo .lede{color:#dfe8e1}
+.hero--photo .button{background:var(--paper);color:var(--green)}
+.hero--photo .button:hover{background:#fff;color:var(--green)}
+.hero--photo .text-link{color:var(--paper)}
+.hero--photo a:focus-visible{outline-color:var(--paper)}
+@media (max-width:640px){.hero-photo::after{background:linear-gradient(180deg,rgba(30,77,59,.9) 0%,rgba(30,77,59,.82) 100%)}}
+
+/* Worked example inside the method section (How we work) */
+.method-example{margin:56px 0 0;max-width:720px}
+.method-caption{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--green-tint);margin-bottom:16px;line-height:1.6}
+.method-example .check-card{color:var(--ink)}
+.method-example .held-card{margin-left:clamp(0px,6vw,72px)}
+@media (max-width:640px){.method-example .held-card{margin-left:0}}
+
 /* Generic section scaffolding */
 .section{padding-block:clamp(72px,9vw,128px)}
 .section-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 64px;margin-bottom:52px}
