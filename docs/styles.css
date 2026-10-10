@@ -171,6 +171,17 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 .step-num{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--paper);color:var(--green);font-family:var(--mono);font-size:13px;font-weight:500;margin-bottom:20px}
 .step h3{font-size:22px;font-weight:600;letter-spacing:-.015em;color:var(--paper);margin-bottom:10px}
 .step p{font-size:16px;color:var(--green-soft)}
+.conds{display:flex;flex-wrap:wrap;gap:36px 32px}
+.cond{flex:1 1 300px;min-width:0;border-top:1px solid var(--green-line);padding-top:22px}
+.cond .tick{display:block;margin-bottom:18px}
+.method .tick circle{fill:var(--paper)}
+.method .tick path{stroke:var(--green)}
+.cond h3{font-size:22px;font-weight:600;letter-spacing:-.015em;line-height:1.25;color:var(--paper);margin-bottom:10px}
+.cond p{font-size:16px;color:var(--green-soft)}
+.cond-proof{margin-top:14px;padding-top:12px;border-top:1px solid var(--green-line);font-family:var(--mono);font-size:13px;line-height:1.55;color:var(--green-tint)!important}
+.cond-closing{margin-top:48px;max-width:760px;font-size:18px;line-height:1.5;color:var(--paper)}
+.conds--brief .cond h3{font-size:20px}
+.conds--brief .cond p{font-size:15px}
 .rules{margin-top:64px;padding-top:36px;border-top:1px solid var(--green-line);display:flex;flex-wrap:wrap;gap:28px 64px}
 .rules h3{flex:0 1 300px;font-size:24px;font-weight:600;letter-spacing:-.015em;line-height:1.25;color:var(--paper)}
 .rules ul{flex:1 1 520px;min-width:0;font-size:18px;line-height:1.5;color:var(--paper)}
