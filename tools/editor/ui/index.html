@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Foundate editor</title>
+  <link rel="stylesheet" href="/__editor/app.css">
+</head>
+<body>
+<div class="app">
+  <aside class="panel">
+    <header class="panel-head">
+      <div class="brand">Foundate <span>editor</span></div>
+      <div class="git" id="git" title="Branch, and files changed since the last commit">…</div>
+    </header>
+
+    <nav class="tabs" aria-label="Editor">
+      <button type="button" data-tab="page" class="active">Page</button>
+      <button type="button" data-tab="design">Design</button>
+      <button type="button" data-tab="changes">Changes <span id="changes-count" class="count" hidden></span></button>
+    </nav>
+
+    <section class="tab" id="tab-page">
+      <label class="field"><span>Page</span><select id="page"></select></label>
+
+      <h2>Sections</h2>
+      <p class="hint">Show, hide or reorder. A hidden section stays in the file, so it can come back later.</p>
+      <ul id="sections" class="sections"></ul>
+
+      <h2>Text</h2>
+      <p class="hint">Click any text in the preview and type. Enter saves, Escape cancels. Or edit it here.</p>
+      <div id="selection" class="selection" hidden>
+        <div class="selection-meta"><code id="sel-tag"></code> <span id="sel-where"></span></div>
+        <textarea id="sel-text" rows="5" spellcheck="true"></textarea>
+        <label class="check" id="sel-everywhere-wrap" hidden>
+          <input type="checkbox" id="sel-everywhere" checked> <span id="sel-everywhere-label"></span>
+        </label>
+        <div class="row">
+          <button type="button" id="sel-save" class="primary">Save</button>
+          <button type="button" id="sel-cancel">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="tab" id="tab-design" hidden>
+      <p class="hint">Every change previews at once. Save writes the values into <code>docs/styles.css</code>.</p>
+      <div id="tokens"></div>
+      <div class="row sticky">
+        <button type="button" id="tokens-save" class="primary" disabled>Save to styles.css</button>
+        <button type="button" id="tokens-reset" disabled>Reset</button>
+      </div>
+    </section>
+
+    <section class="tab" id="tab-changes" hidden>
+      <h2>Uncommitted</h2>
+      <pre id="diff-stat" class="stat">Nothing changed.</pre>
+      <details><summary>Full diff</summary><pre id="diff" class="diff"></pre></details>
+      <label class="field"><span>What changed (the commit message)</span><input id="commit-msg" placeholder="e.g. Shorter hero copy; darker green"></label>
+      <div class="row">
+        <button type="button" id="commit" class="primary">Commit</button>
+        <button type="button" id="discard" class="danger">Discard all</button>
+      </div>
+
+      <h2>Publish</h2>
+      <p class="hint">Pushes the branch and opens a pull request. Merging it on GitHub is what publishes foundate.ai.</p>
+      <button type="button" id="publish">Push and open a pull request</button>
+      <p id="publish-result" class="hint"></p>
+    </section>
+
+    <footer class="panel-foot"><div id="status" class="status" aria-live="polite"></div></footer>
+  </aside>
+
+  <main class="stage">
+    <div class="stage-bar">
+      <div class="viewports" aria-label="Viewport">
+        <button type="button" data-w="0" class="active">Desktop</button>
+        <button type="button" data-w="1024">Laptop</button>
+        <button type="button" data-w="768">Tablet</button>
+        <button type="button" data-w="390">Phone</button>
+      </div>
+      <a id="open-plain" href="/" target="_blank" rel="noopener">Open the page without the editor ↗</a>
+    </div>
+    <div class="frame-wrap"><iframe id="frame" title="Site preview"></iframe></div>
+  </main>
+</div>
+<script src="/__editor/app.js"></script>
+</body>
+</html>

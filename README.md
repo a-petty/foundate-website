@@ -23,6 +23,7 @@ GitHub Pages publishes only the `docs/` folder. Everything else in the repo
 | `docs/robots.txt`, `docs/sitemap.xml`, `docs/manifest.webmanifest` | Crawler and install metadata. |
 | `docs/CNAME`, `docs/.nojekyll` | Custom domain, and "serve files exactly as committed". |
 | `tools/make_images.py` | Draws the social preview and icons from the site fonts and the plinth-F mark. No source artwork. |
+| `tools/editor/` | The local editor: design tokens with live preview, text in place, sections shown, hidden or reordered, commit and pull request from a panel. See its [README](tools/editor/README.md). |
 
 The header and footer are repeated in each page; change all four together.
 Asset and page links are root-absolute (`/styles.css`, `/work/`).
@@ -33,6 +34,17 @@ Public copy uses generalized wording: no exact counts, client-identifying team
 names or internal findings.
 
 ## Edit and publish
+
+For copy, colours, sizes and which sections show, run the local editor and work in the browser:
+
+```sh
+python3 tools/editor/serve.py
+```
+
+then open <http://127.0.0.1:8766/__editor/>. It writes plain edits into `docs/`; the steps below
+still apply to publishing them, and its Changes tab can do the commit and open the pull request.
+
+For anything else:
 
 1. Edit the files in `~/Dev/Foundate/website` (a Claude Code session or any editor).
 2. Preview locally:
