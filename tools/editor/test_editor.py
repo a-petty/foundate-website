@@ -320,6 +320,23 @@ def test_server_sections_tokens_discard_commit(served):
     assert " hidden>" not in (root / "docs/index.html").read_text()
 
 
+def test_files_keep_their_line_endings(tmp_path):
+    """A checkout on Windows may hold CRLF files; edits must not change that, nor turn LF files into CRLF."""
+    crlf = SMALL.replace("\n", "\r\n")
+    f = tmp_path / "crlf.html"
+    serve.write(f, crlf)
+    assert f.read_bytes().count(b"\r\n") == SMALL.count("\n") and serve.read(f) == crlf
+    d = pg.Doc(crlf)
+    i = next(k for k, n in enumerate(d.editables) if n.attr("id") == "t1")
+    new = pg.set_text(crlf, i, "First & foremost", "First")
+    assert "\r\n" in new and new.count("\r\n") == crlf.count("\r\n") and "<h1 id=\"t1\">First</h1>" in new
+    assert pg.set_hidden(crlf, 1, True).count("\r\n") == crlf.count("\r\n")
+    css_crlf = CSS.replace("\n", "\r\n")
+    out = tk.set_tokens(css_crlf, {"--radius": "8px"})
+    assert out.count("\r\n") == css_crlf.count("\r\n") and "--radius:8px;   /* corners */\r\n" in out
+    assert tk.read_tokens(css_crlf)[1]["value"] == "4px"
+
+
 def test_server_refuses_cross_origin_writes(served):
     root, call = served
     code, r = call("/__api/tokens", {"values": {"--green": "#000000"}}, origin=False)

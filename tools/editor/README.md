@@ -16,7 +16,9 @@ python3 tools/editor/serve.py
 ```
 
 then open <http://127.0.0.1:8766/__editor/>. In Claude Code the `editor` configuration in
-`.claude/launch.json` starts the same thing. It needs only the system Python (3.9 or later).
+`.claude/launch.json` starts the same thing. It needs only Python 3.9 or later, which macOS ships;
+on Windows, in PowerShell, it is `python tools\editor\serve.py` (or `py` if `python` is not on the
+path). Files keep whatever line endings they were checked out with.
 
 ## What it does
 
