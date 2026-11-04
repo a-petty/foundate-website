@@ -27,7 +27,7 @@ path). Files keep whatever line endings they were checked out with.
   with a `hidden` attribute, so nothing is deleted and anything can come back later. Clicking a
   section's name scrolls the preview to it.
 - **Text.** Click any text in the preview and type. Enter saves, Escape cancels, pasting is plain
-  text. The same element can be edited in the panel's text box, markup included. When the same
+  text. The same element can be edited in the panel's text box, markup included. Emptying an element and pressing Enter removes it (after a confirmation), and the panel's Move up, Move down and Remove buttons do the same for the selected element; a removed element takes its line with it, so no blank line is left behind. When the same
   element says the same thing on other pages (the header, the footer, the closing call to action),
   the panel offers to change them all; each page keeps its own attributes, such as the current-page
   marker on a nav link.
