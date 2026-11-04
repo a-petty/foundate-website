@@ -35,6 +35,18 @@ mimetypes.add_type("application/manifest+json", ".webmanifest")
 mimetypes.add_type("image/svg+xml", ".svg")
 
 
+def read(f: Path) -> str:
+    """Read exactly what is on disk: no newline translation, so offsets match the bytes and a file
+    checked out with Windows line endings stays that way."""
+    with open(f, "r", encoding="utf-8", newline="") as h:
+        return h.read()
+
+
+def write(f: Path, text: str) -> None:
+    with open(f, "w", encoding="utf-8", newline="") as h:
+        h.write(text)
+
+
 class ApiError(Exception):
     pass
 
@@ -59,7 +71,7 @@ class Site:
         order = ["/"]
         home = self.docs / "index.html"
         if home.exists():
-            doc = pg.Doc(home.read_text(encoding="utf-8"))
+            doc = pg.Doc(read(home))
             nav = doc.find(lambda n: n.tag == "nav")
             if nav is not None:
                 for a in nav.descendants():
@@ -79,19 +91,20 @@ class Site:
         return f
 
     def rel(self, f: Path) -> str:
-        return str(f.relative_to(self.root))
+        return f.relative_to(self.root).as_posix()
 
     def page_info(self, path: str) -> dict:
         f = self.page_file(path)
-        doc = pg.Doc(f.read_text(encoding="utf-8"))
+        doc = pg.Doc(read(f))
         info = doc.summary()
         info.update({"path": path, "file": self.rel(f)})
         return info
 
     def annotated(self, f: Path) -> str:
         """The page as served to the preview: annotated, with the overlay script before </body>."""
-        text = pg.Doc(f.read_text(encoding="utf-8")).annotated()
-        tag = '<script src="/__editor/overlay.js"></script>\n'
+        text = pg.Doc(read(f)).annotated()
+        stamp = int((UI / "overlay.js").stat().st_mtime)                 # a changed overlay is never served stale
+        tag = '<script src="/__editor/overlay.js?v=%d"></script>\n' % stamp
         return text.replace("</body>", tag + "</body>", 1) if "</body>" in text else text + tag
 
     # --- edits ---------------------------------------------------------------------------------
@@ -99,7 +112,7 @@ class Site:
     def same_elsewhere(self, path: str, index: int) -> List[dict]:
         """Other pages with the same element in the same place, saying the same thing: the header, the
         footer, the closing call to action."""
-        return self._same_in_others(self.page_file(path).read_text(encoding="utf-8"), index, path)
+        return self._same_in_others(read(self.page_file(path)), index, path)
 
     def _same_in_others(self, text: str, index: int, path: str) -> List[dict]:
         doc = pg.Doc(text)
@@ -111,7 +124,7 @@ class Site:
         for p in self.pages():
             if p["path"] == path:
                 continue
-            d2 = pg.Doc(self.page_file(p["path"]).read_text(encoding="utf-8"))
+            d2 = pg.Doc(read(self.page_file(p["path"])))
             m = d2.resolve(loc)
             if m is None or m.tag != n.tag or d2.text_of(m) != wanted:
                 continue
@@ -122,16 +135,16 @@ class Site:
 
     def set_text(self, path: str, index: int, before: str, after: str, everywhere: bool) -> dict:
         f = self.page_file(path)
-        text = f.read_text(encoding="utf-8")
+        text = read(f)
         others = self._same_in_others(text, index, path) if everywhere else []   # before the page changes
         new = pg.set_text(text, index, before, after)
         changed, skipped = [], []
         if new != text:
-            f.write_text(new, encoding="utf-8")
+            write(f, new)
             changed.append(self.rel(f))
         for other in others:
             g = self.page_file(other["path"])
-            g_text = g.read_text(encoding="utf-8")
+            g_text = read(g)
             d2 = pg.Doc(g_text)
             cur = d2.inner(d2.editables[other["index"]])
             adapted = pg.retarget(before, after, cur)
@@ -139,7 +152,7 @@ class Site:
                 skipped.append({"file": self.rel(g), "reason": "marked up differently there"})
                 continue
             try:
-                g.write_text(pg.set_text(g_text, other["index"], cur, adapted), encoding="utf-8")
+                write(g, pg.set_text(g_text, other["index"], cur, adapted))
                 changed.append(self.rel(g))
             except pg.EditError as e:
                 skipped.append({"file": self.rel(g), "reason": str(e)})
@@ -147,7 +160,7 @@ class Site:
 
     def section(self, path: str, index: int, action: str) -> dict:
         f = self.page_file(path)
-        text = f.read_text(encoding="utf-8")
+        text = read(f)
         if action == "hide":
             new = pg.set_hidden(text, index, True)
         elif action == "show":
@@ -159,17 +172,42 @@ class Site:
         else:
             raise ApiError("unknown action %r" % action)
         if new != text:
-            f.write_text(new, encoding="utf-8")
+            write(f, new)
         return self.page_info(path)
 
+    def element(self, path: str, index: int, action: str, everywhere: bool) -> dict:
+        """Remove a text element, or move it among its neighbours; with `everywhere`, the same element on
+        every other page that carries it (the header, the footer, the closing call to action)."""
+        ops = {"remove": lambda t, i: pg.remove_element(t, i),
+               "up": lambda t, i: pg.move_element(t, i, -1),
+               "down": lambda t, i: pg.move_element(t, i, +1)}
+        if action not in ops:
+            raise ApiError("unknown action %r" % action)
+        f = self.page_file(path)
+        text = read(f)
+        others = self._same_in_others(text, index, path) if everywhere else []   # before the page changes
+        new = ops[action](text, index)
+        changed, skipped = [], []
+        if new != text:
+            write(f, new)
+            changed.append(self.rel(f))
+        for other in others:
+            g = self.page_file(other["path"])
+            try:
+                write(g, ops[action](read(g), other["index"]))
+                changed.append(self.rel(g))
+            except pg.EditError as e:
+                skipped.append({"file": self.rel(g), "reason": str(e)})
+        return {"changed": changed, "skipped": skipped}
+
     def tokens(self) -> List[dict]:
-        return tk.read_tokens(self.css.read_text(encoding="utf-8"))
+        return tk.read_tokens(read(self.css))
 
     def set_tokens(self, values: Dict[str, str]) -> List[dict]:
-        css = self.css.read_text(encoding="utf-8")
+        css = read(self.css)
         new = tk.set_tokens(css, values)
         if new != css:
-            self.css.write_text(new, encoding="utf-8")
+            write(self.css, new)
         return self.tokens()
 
     # --- git -----------------------------------------------------------------------------------
@@ -270,6 +308,14 @@ class Handler(BaseHTTPRequestHandler):
             ctype += "; charset=utf-8"
         self._bytes(f.read_bytes(), ctype)
 
+    def _editor_index(self) -> None:
+        """The panel, with its stylesheet and script stamped by modification time so a browser never keeps
+        an old copy after the editor changes."""
+        html = read(UI / "index.html")
+        for name in ("app.css", "app.js"):
+            html = html.replace('/__editor/%s"' % name, '/__editor/%s?v=%d"' % (name, int((UI / name).stat().st_mtime)))
+        self._bytes(html.encode("utf-8"), "text/html; charset=utf-8")
+
     def _same_origin(self) -> bool:
         host = self.headers.get("Host", "")
         origin = self.headers.get("Origin") or ""
@@ -288,7 +334,7 @@ class Handler(BaseHTTPRequestHandler):
         q = parse_qs(url.query)
         try:
             if path == "/__editor" or path == "/__editor/":
-                return self._file(UI / "index.html")
+                return self._editor_index()
             if path.startswith("/__editor/"):
                 f = (UI / path[len("/__editor/"):]).resolve()
                 if UI not in f.parents or not f.is_file():
@@ -358,6 +404,8 @@ class Handler(BaseHTTPRequestHandler):
                                          bool(b.get("everywhere"))))
         if name == "section":
             return self._json(s.section(b["path"], int(b["index"]), str(b["action"])))
+        if name == "element":
+            return self._json(s.element(b["path"], int(b["index"]), str(b["action"]), bool(b.get("everywhere"))))
         if name == "tokens":
             values = b.get("values") or {}
             if not isinstance(values, dict):

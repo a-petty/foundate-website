@@ -322,7 +322,81 @@ def test_server_sections_tokens_discard_commit(served):
     assert home.read_text() == committed                                    # back to the committed page, whatever it holds
 
 
+def test_files_keep_their_line_endings(tmp_path):
+    """A checkout on Windows may hold CRLF files; edits must not change that, nor turn LF files into CRLF."""
+    crlf = SMALL.replace("\n", "\r\n")
+    f = tmp_path / "crlf.html"
+    serve.write(f, crlf)
+    assert f.read_bytes().count(b"\r\n") == SMALL.count("\n") and serve.read(f) == crlf
+    d = pg.Doc(crlf)
+    i = next(k for k, n in enumerate(d.editables) if n.attr("id") == "t1")
+    new = pg.set_text(crlf, i, "First & foremost", "First")
+    assert "\r\n" in new and new.count("\r\n") == crlf.count("\r\n") and "<h1 id=\"t1\">First</h1>" in new
+    assert pg.set_hidden(crlf, 1, True).count("\r\n") == crlf.count("\r\n")
+    css_crlf = CSS.replace("\n", "\r\n")
+    out = tk.set_tokens(css_crlf, {"--radius": "8px"})
+    assert out.count("\r\n") == css_crlf.count("\r\n") and "--radius:8px;   /* corners */\r\n" in out
+    assert tk.read_tokens(css_crlf)[1]["value"] == "4px"
+
+
 def test_server_refuses_cross_origin_writes(served):
     root, call = served
     code, r = call("/__api/tokens", {"values": {"--green": "#000000"}}, origin=False)
     assert code == 403
+
+
+def test_remove_element_takes_its_line_with_it():
+    d = pg.Doc(SMALL)
+    i = next(k for k, n in enumerate(d.editables) if n.attr("class") == "lede")
+    new = pg.remove_element(SMALL, i)
+    assert "lede" not in new and new.count("\n") == SMALL.count("\n") - 4          # the p spanned four lines
+    assert '<h1 id="t1">First &amp; foremost</h1>\n      <img' in new               # neighbours intact, no blank line
+    j = next(k for k, n in enumerate(d.editables) if n.attr("class") == "wordmark")
+    inline = pg.remove_element(SMALL, j)                                            # shares its line with <header>
+    assert '<header class="site-header">\n' in inline and "wordmark" not in inline
+    with pytest.raises(pg.EditError):
+        pg.remove_element(SMALL, 99)
+
+
+def test_move_element_swaps_neighbours():
+    d = pg.Doc(SMALL)
+    i = next(k for k, n in enumerate(d.editables) if n.attr("id") == "t1")
+    new = pg.move_element(SMALL, i, +1)                                             # the h1 after the lede
+    assert new.index('<p class="lede">') < new.index('<h1 id="t1">')
+    d2 = pg.Doc(new)
+    k = next(k for k, n in enumerate(d2.editables) if n.attr("id") == "t1")
+    assert pg.move_element(new, k, -1) == SMALL
+    with pytest.raises(pg.EditError):
+        pg.move_element(SMALL, i, -1)                                               # already first in its section
+
+
+def test_server_element_remove_and_move_everywhere(served):
+    root, call = served
+    about = root / "docs/about/index.html"
+    before = about.read_text()
+    d = pg.Doc(before)
+    i = next(k for k, n in enumerate(d.editables) if n.attr("class") == "eyebrow")   # the first label, whatever it says
+    code, r = call("/__api/element", {"path": "/about/", "index": i, "action": "remove"})
+    assert code == 200 and r["changed"] == ["docs/about/index.html"], r
+    t = about.read_text()
+    assert t.count('class="eyebrow"') == before.count('class="eyebrow"') - 1 and t.count("\n") == before.count("\n") - 1
+    home = pg.Doc((root / "docs/index.html").read_text())                           # the closing call to action is on every page
+    j = next(k for k, n in enumerate(home.editables) if n.attr("id") == "contact-title")
+    npages = len(call("/__api/state")[1]["pages"])
+    code, r = call("/__api/element", {"path": "/", "index": j, "action": "down", "everywhere": True})
+    assert code == 200 and len(r["changed"]) == npages and r["skipped"] == [], r
+    for f in root.glob("docs/**/index.html"):
+        t = f.read_text()
+        assert t.index('<h2 id="contact-title">') > t.index("A report that takes too long"), f
+    code, r = call("/__api/element", {"path": "/", "index": 999, "action": "remove"})
+    assert code == 400
+    code, r = call("/__api/element", {"path": "/", "index": j, "action": "sideways"})
+    assert code == 400
+
+
+def test_set_text_strips_editing_state():
+    """contenteditable is the preview's editing state; it must never be written into a page."""
+    d = pg.Doc(SMALL)
+    i = next(k for k, n in enumerate(d.editables) if d.text_of(n) == "Body with a link.")
+    new = pg.set_text(SMALL, i, 'Body with <a href="/x">a link</a>.', 'Body with <a href="/x" contenteditable="true">a link</a>!')
+    assert 'contenteditable' not in new and '<p>Body with <a href="/x">a link</a>!</p>' in new
