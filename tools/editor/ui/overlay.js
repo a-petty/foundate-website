@@ -38,9 +38,10 @@
   }
   function finish(save) {
     if (!active) return;
-    const el = active, html = clean(el.innerHTML);
-    target.removeAttribute("contenteditable");
+    const el = active;
+    target.removeAttribute("contenteditable");            // before reading the HTML, or it gets saved
     el.classList.remove("ed-active");
+    const html = clean(el.innerHTML);
     active = null; target = null;
     if (!save) { el.innerHTML = original; }
     else if (html !== clean(original)) { post({ type: "edit", id: idOf(el), before: original, after: html }); return; }
