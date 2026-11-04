@@ -264,8 +264,8 @@ def test_server_state_pages_and_preview(served):
     root, call = served
     code, st = call("/__api/state")
     assert code == 200 and st["branch"] == "main" and st["changed"] == []
-    assert [p["path"] for p in st["pages"]][:4] == ["/", "/work/", "/how-we-work/", "/about/"]
-    assert st["pages"][1]["label"] == "Work"
+    assert [p["path"] for p in st["pages"]][:3] == ["/", "/how-we-work/", "/about/"]
+    assert st["pages"][1]["label"] == "How we work"
     code, page = call("/__api/page?path=/")
     assert code == 200 and page["sections"][1]["label"].startswith("AI transformation")
     code, html = call("/?__edit=1")
@@ -279,19 +279,19 @@ def test_server_state_pages_and_preview(served):
 def test_server_text_edit_everywhere_and_diff(served):
     root, call = served
     home = pg.Doc((root / "docs/index.html").read_text())
-    hdr_idx = next(i for i, n in enumerate(home.editables) if n.tag == "li" and home.text_of(n) == "Work")
+    hdr_idx = next(i for i, n in enumerate(home.editables) if n.tag == "li" and home.text_of(n) == "About")
     code, same = call("/__api/same?path=/&index=%d" % hdr_idx)
-    assert code == 200 and sorted(p["path"] for p in same["pages"]) == ["/about/", "/how-we-work/", "/work/"]
-    current_before = (root / "docs/work/index.html").read_text().count("aria-current")
-    code, r = call("/__api/text", {"path": "/", "index": hdr_idx, "before": '<a href="/work/">Work</a>',
-                                   "after": '<a href="/work/">Our work</a>', "everywhere": True})
-    assert code == 200 and len(r["changed"]) == 4 and r["skipped"] == [], r
+    assert code == 200 and sorted(p["path"] for p in same["pages"]) == ["/about/", "/how-we-work/"]
+    current_before = (root / "docs/about/index.html").read_text().count("aria-current")
+    code, r = call("/__api/text", {"path": "/", "index": hdr_idx, "before": '<a href="/about/">About</a>',
+                                   "after": '<a href="/about/">About us</a>', "everywhere": True})
+    assert code == 200 and len(r["changed"]) == 3 and r["skipped"] == [], r
     for f in root.glob("docs/**/index.html"):
         t = f.read_text()
-        assert t.count(">Our work</a></li>") == 1 and ">Work</a></li>" in t, f    # the header changed, the footer did not
-    assert (root / "docs/work/index.html").read_text().count("aria-current") == current_before
+        assert t.count(">About us</a></li>") == 1 and ">About</a></li>" in t, f    # the header changed, the footer did not
+    assert (root / "docs/about/index.html").read_text().count("aria-current") == current_before
     code, d = call("/__api/diff")
-    assert code == 200 and len(d["changed"]) == 4 and "+        <li><a href=\"/work/\">Our work</a></li>" in d["diff"]
+    assert code == 200 and len(d["changed"]) == 3 and "+        <li><a href=\"/about/\">About us</a></li>" in d["diff"]
     code, r = call("/__api/text", {"path": "/", "index": hdr_idx, "before": "stale", "after": "x"})
     assert code == 400 and "reload" in r["error"]
 
@@ -382,8 +382,9 @@ def test_server_element_remove_and_move_everywhere(served):
     assert t.count('class="eyebrow"') == before.count('class="eyebrow"') - 1 and t.count("\n") == before.count("\n") - 1
     home = pg.Doc((root / "docs/index.html").read_text())                           # the closing call to action is on every page
     j = next(k for k, n in enumerate(home.editables) if n.attr("id") == "contact-title")
+    npages = len(call("/__api/state")[1]["pages"])
     code, r = call("/__api/element", {"path": "/", "index": j, "action": "down", "everywhere": True})
-    assert code == 200 and len(r["changed"]) == 4 and r["skipped"] == [], r
+    assert code == 200 and len(r["changed"]) == npages and r["skipped"] == [], r
     for f in root.glob("docs/**/index.html"):
         t = f.read_text()
         assert t.index('<h2 id="contact-title">') > t.index("A report that takes too long"), f
@@ -391,3 +392,11 @@ def test_server_element_remove_and_move_everywhere(served):
     assert code == 400
     code, r = call("/__api/element", {"path": "/", "index": j, "action": "sideways"})
     assert code == 400
+
+
+def test_set_text_strips_editing_state():
+    """contenteditable is the preview's editing state; it must never be written into a page."""
+    d = pg.Doc(SMALL)
+    i = next(k for k, n in enumerate(d.editables) if d.text_of(n) == "Body with a link.")
+    new = pg.set_text(SMALL, i, 'Body with <a href="/x">a link</a>.', 'Body with <a href="/x" contenteditable="true">a link</a>!')
+    assert 'contenteditable' not in new and '<p>Body with <a href="/x">a link</a>!</p>' in new
