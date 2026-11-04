@@ -305,7 +305,7 @@ def set_text(text: str, index: int, before: str, after: str) -> str:
     cur = doc.inner(n)
     if normalize(cur) != normalize(before):
         raise EditError("the text on disk is not what the editor showed; reload the preview and try again")
-    new = after.strip()
+    new = re.sub(r'\s+contenteditable(?:="[^"]*")?', "", after).strip()   # editing state is never content
     if not strip_tags(new).strip():
         raise EditError("empty text; hide the section instead of blanking it")
     _check_fragment(new)
