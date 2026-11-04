@@ -154,8 +154,36 @@
     S.sel = null; S.same = [];
     $("#selection").hidden = true;
   }
+  function everywhereChecked() { return S.same.length > 0 && $("#sel-everywhere").checked; }
+  async function elementAction(id, action, everywhere) {
+    try {
+      const r = await api.post("element", { path: S.page, index: id, action, everywhere });
+      const n = r.changed.length;
+      status({ remove: "Removed", up: "Moved up", down: "Moved down" }[action] + (n > 1 ? " on " + n + " pages." : "."), "ok");
+      clearSelection();
+      loadPage(S.page, true);
+      refreshStatus();
+    } catch (e) { fail(e); }
+  }
+  $("#sel-up").addEventListener("click", () => { if (S.sel) elementAction(S.sel.id, "up", everywhereChecked()); });
+  $("#sel-down").addEventListener("click", () => { if (S.sel) elementAction(S.sel.id, "down", everywhereChecked()); });
+  $("#sel-remove").addEventListener("click", () => {
+    if (!S.sel) return;
+    const ev = everywhereChecked();
+    if (confirm("Remove this <" + S.sel.tag + "> from the page" + (ev ? " and from the other pages that carry it" : "") + "?")) {
+      elementAction(S.sel.id, "remove", ev);
+    }
+  });
   async function saveText(id, before, after) {
-    const everywhere = S.same.length > 0 && $("#sel-everywhere").checked;
+    const everywhere = everywhereChecked();
+    if (!after.replace(/<[^>]*>/g, "").trim()) {                 // emptied: that means remove it
+      if (confirm("The text is empty. Remove this element from the page" + (everywhere ? " and from the other pages that carry it" : "") + "?")) {
+        return elementAction(id, "remove", everywhere);
+      }
+      send({ type: "restore", id, html: before });
+      if (S.sel && S.sel.id === id) $("#sel-text").value = before.trim();
+      return;
+    }
     if (S.sel && S.sel.id === id) S.sel.pending = true;
     try {
       const r = await api.post("text", { path: S.page, index: id, before, after, everywhere });

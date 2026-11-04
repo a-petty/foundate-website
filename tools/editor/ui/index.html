@@ -28,7 +28,7 @@
       <ul id="sections" class="sections"></ul>
 
       <h2>Text</h2>
-      <p class="hint">Click any text in the preview and type. Enter saves, Escape cancels. Or edit it here.</p>
+      <p class="hint">Click any text in the preview and type. Enter saves, Escape cancels. Empty it and press Enter to remove it, or use the buttons here to move or remove it.</p>
       <div id="selection" class="selection" hidden>
         <div class="selection-meta"><code id="sel-tag"></code> <span id="sel-where"></span></div>
         <textarea id="sel-text" rows="5" spellcheck="true"></textarea>
@@ -38,6 +38,11 @@
         <div class="row">
           <button type="button" id="sel-save" class="primary">Save</button>
           <button type="button" id="sel-cancel">Cancel</button>
+        </div>
+        <div class="row">
+          <button type="button" id="sel-up" title="Swap with the element before it">Move up</button>
+          <button type="button" id="sel-down" title="Swap with the element after it">Move down</button>
+          <button type="button" id="sel-remove" class="danger" title="Delete this element from the page">Remove</button>
         </div>
       </div>
     </section>

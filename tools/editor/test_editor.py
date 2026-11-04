@@ -324,3 +324,51 @@ def test_server_refuses_cross_origin_writes(served):
     root, call = served
     code, r = call("/__api/tokens", {"values": {"--green": "#000000"}}, origin=False)
     assert code == 403
+
+
+def test_remove_element_takes_its_line_with_it():
+    d = pg.Doc(SMALL)
+    i = next(k for k, n in enumerate(d.editables) if n.attr("class") == "lede")
+    new = pg.remove_element(SMALL, i)
+    assert "lede" not in new and new.count("\n") == SMALL.count("\n") - 4          # the p spanned four lines
+    assert '<h1 id="t1">First &amp; foremost</h1>\n      <img' in new               # neighbours intact, no blank line
+    j = next(k for k, n in enumerate(d.editables) if n.attr("class") == "wordmark")
+    inline = pg.remove_element(SMALL, j)                                            # shares its line with <header>
+    assert '<header class="site-header">\n' in inline and "wordmark" not in inline
+    with pytest.raises(pg.EditError):
+        pg.remove_element(SMALL, 99)
+
+
+def test_move_element_swaps_neighbours():
+    d = pg.Doc(SMALL)
+    i = next(k for k, n in enumerate(d.editables) if n.attr("id") == "t1")
+    new = pg.move_element(SMALL, i, +1)                                             # the h1 after the lede
+    assert new.index('<p class="lede">') < new.index('<h1 id="t1">')
+    d2 = pg.Doc(new)
+    k = next(k for k, n in enumerate(d2.editables) if n.attr("id") == "t1")
+    assert pg.move_element(new, k, -1) == SMALL
+    with pytest.raises(pg.EditError):
+        pg.move_element(SMALL, i, -1)                                               # already first in its section
+
+
+def test_server_element_remove_and_move_everywhere(served):
+    root, call = served
+    about = root / "docs/about/index.html"
+    d = pg.Doc(about.read_text())
+    i = next(k for k, n in enumerate(d.editables) if d.text_of(n).startswith("He has spent most of his career"))
+    lines = about.read_text().count("\n")
+    code, r = call("/__api/element", {"path": "/about/", "index": i, "action": "remove"})
+    assert code == 200 and r["changed"] == ["docs/about/index.html"], r
+    t = about.read_text()
+    assert "He has spent most of his career" not in t and t.count("\n") == lines - 1
+    home = pg.Doc((root / "docs/index.html").read_text())                           # the closing call to action is on every page
+    j = next(k for k, n in enumerate(home.editables) if n.attr("id") == "contact-title")
+    code, r = call("/__api/element", {"path": "/", "index": j, "action": "down", "everywhere": True})
+    assert code == 200 and len(r["changed"]) == 4 and r["skipped"] == [], r
+    for f in root.glob("docs/**/index.html"):
+        t = f.read_text()
+        assert t.index('<h2 id="contact-title">') > t.index("A report that takes too long"), f
+    code, r = call("/__api/element", {"path": "/", "index": 999, "action": "remove"})
+    assert code == 400
+    code, r = call("/__api/element", {"path": "/", "index": j, "action": "sideways"})
+    assert code == 400

@@ -162,6 +162,31 @@ class Site:
             f.write_text(new, encoding="utf-8")
         return self.page_info(path)
 
+    def element(self, path: str, index: int, action: str, everywhere: bool) -> dict:
+        """Remove a text element, or move it among its neighbours; with `everywhere`, the same element on
+        every other page that carries it (the header, the footer, the closing call to action)."""
+        ops = {"remove": lambda t, i: pg.remove_element(t, i),
+               "up": lambda t, i: pg.move_element(t, i, -1),
+               "down": lambda t, i: pg.move_element(t, i, +1)}
+        if action not in ops:
+            raise ApiError("unknown action %r" % action)
+        f = self.page_file(path)
+        text = read(f)
+        others = self._same_in_others(text, index, path) if everywhere else []   # before the page changes
+        new = ops[action](text, index)
+        changed, skipped = [], []
+        if new != text:
+            write(f, new)
+            changed.append(self.rel(f))
+        for other in others:
+            g = self.page_file(other["path"])
+            try:
+                write(g, ops[action](read(g), other["index"]))
+                changed.append(self.rel(g))
+            except pg.EditError as e:
+                skipped.append({"file": self.rel(g), "reason": str(e)})
+        return {"changed": changed, "skipped": skipped}
+
     def tokens(self) -> List[dict]:
         return tk.read_tokens(self.css.read_text(encoding="utf-8"))
 
@@ -358,6 +383,8 @@ class Handler(BaseHTTPRequestHandler):
                                          bool(b.get("everywhere"))))
         if name == "section":
             return self._json(s.section(b["path"], int(b["index"]), str(b["action"])))
+        if name == "element":
+            return self._json(s.element(b["path"], int(b["index"]), str(b["action"]), bool(b.get("everywhere"))))
         if name == "tokens":
             values = b.get("values") or {}
             if not isinstance(values, dict):
