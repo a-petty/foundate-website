@@ -11,7 +11,6 @@ GitHub Pages publishes only the `docs/` folder. Everything else in the repo
 | Path | What it is |
 | --- | --- |
 | `docs/index.html` | Home: hero, where the value is, two featured cases, ownership, contact. |
-| `docs/work/index.html` | Work (foundate.ai/work/): every project with how it was proven. |
 | `docs/how-we-work/index.html` | How we work (foundate.ai/how-we-work/): lessons, what you keep, where we build, engagements. |
 | `docs/about/index.html` | About (foundate.ai/about/): why we exist, beliefs, how we are built, the two Managing Partners, the name. |
 | `docs/styles.css` | All styles; design tokens at the top. |
@@ -23,9 +22,10 @@ GitHub Pages publishes only the `docs/` folder. Everything else in the repo
 | `docs/robots.txt`, `docs/sitemap.xml`, `docs/manifest.webmanifest` | Crawler and install metadata. |
 | `docs/CNAME`, `docs/.nojekyll` | Custom domain, and "serve files exactly as committed". |
 | `tools/make_images.py` | Draws the social preview and icons from the site fonts and the plinth-F mark. No source artwork. |
+| `archive/` | Pages taken off the site and kept unpublished, with the date and reason in `archive/README.md`. Nothing here is served. |
 | `tools/editor/` | The local editor: design tokens with live preview, text in place, sections shown, hidden or reordered, commit and pull request from a panel. See its [README](tools/editor/README.md). |
 
-The header and footer are repeated in each page; change all four together.
+The header and footer are repeated in each page; change all three together.
 Asset and page links are root-absolute (`/styles.css`, `/work/`).
 
 Every claim on the page about past work must be supported by the claims
