@@ -103,7 +103,8 @@ class Site:
     def annotated(self, f: Path) -> str:
         """The page as served to the preview: annotated, with the overlay script before </body>."""
         text = pg.Doc(read(f)).annotated()
-        tag = '<script src="/__editor/overlay.js"></script>\n'
+        stamp = int((UI / "overlay.js").stat().st_mtime)                 # a changed overlay is never served stale
+        tag = '<script src="/__editor/overlay.js?v=%d"></script>\n' % stamp
         return text.replace("</body>", tag + "</body>", 1) if "</body>" in text else text + tag
 
     # --- edits ---------------------------------------------------------------------------------
@@ -307,6 +308,14 @@ class Handler(BaseHTTPRequestHandler):
             ctype += "; charset=utf-8"
         self._bytes(f.read_bytes(), ctype)
 
+    def _editor_index(self) -> None:
+        """The panel, with its stylesheet and script stamped by modification time so a browser never keeps
+        an old copy after the editor changes."""
+        html = read(UI / "index.html")
+        for name in ("app.css", "app.js"):
+            html = html.replace('/__editor/%s"' % name, '/__editor/%s?v=%d"' % (name, int((UI / name).stat().st_mtime)))
+        self._bytes(html.encode("utf-8"), "text/html; charset=utf-8")
+
     def _same_origin(self) -> bool:
         host = self.headers.get("Host", "")
         origin = self.headers.get("Origin") or ""
@@ -325,7 +334,7 @@ class Handler(BaseHTTPRequestHandler):
         q = parse_qs(url.query)
         try:
             if path == "/__editor" or path == "/__editor/":
-                return self._file(UI / "index.html")
+                return self._editor_index()
             if path.startswith("/__editor/"):
                 f = (UI / path[len("/__editor/"):]).resolve()
                 if UI not in f.parents or not f.is_file():

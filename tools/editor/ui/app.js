@@ -126,7 +126,7 @@
     } else if (m.type === "scroll") { S.scrollY = m.y || 0; }
     else if (m.type === "navigate") { if (S.pages.some((p) => p.path === m.path)) loadPage(m.path); }
     else if (m.type === "select") { showSelection(m); }
-    else if (m.type === "deselect") { if (S.sel && S.sel.id === m.id && !S.sel.pending) clearSelection(); }
+    else if (m.type === "deselect") { /* inline editing ended; the panel keeps the selection for its buttons */ }
     else if (m.type === "edit") { saveText(m.id, m.before, m.after); }
   });
 
@@ -138,6 +138,7 @@
     $("#sel-where").textContent = m.shared ? "in the header or footer, which every page shares" : "";
     $("#sel-text").value = m.html.trim();
     $("#sel-everywhere-wrap").hidden = true;
+    $("#selection").scrollIntoView({ block: "nearest" });
     S.same = [];
     try {
       const r = await api.get("same?path=" + encodeURIComponent(S.page) + "&index=" + m.id);
@@ -153,6 +154,7 @@
   function clearSelection() {
     S.sel = null; S.same = [];
     $("#selection").hidden = true;
+    send({ type: "unselect" });
   }
   function everywhereChecked() { return S.same.length > 0 && $("#sel-everywhere").checked; }
   async function elementAction(id, action, everywhere) {

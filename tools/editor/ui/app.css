@@ -6,6 +6,7 @@
   --p-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{height:100%}
 body{margin:0;font:14px/1.45 var(--p-font);color:var(--p-ink);background:var(--p-bg)}
 button,input,select,textarea{font:inherit;color:inherit}

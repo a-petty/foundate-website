@@ -9,6 +9,7 @@
   style.textContent =
     "[data-ed]{cursor:text}" +
     "[data-ed]:hover{outline:2px dashed rgba(30,77,59,.55);outline-offset:3px}" +
+    "[data-ed].ed-selected{outline:2px solid rgba(30,77,59,.45);outline-offset:3px}" +
     "[data-ed].ed-active{outline:2px solid #1e4d3b;outline-offset:3px;background:rgba(30,77,59,.06)}" +
     "[data-ed-sec].ed-hl{outline:3px solid #1e4d3b;outline-offset:-3px}";
   document.head.appendChild(style);
@@ -27,6 +28,8 @@
     if (active === el) return;
     if (active) finish(true);
     active = el; original = el.innerHTML; target = editTarget(el);
+    document.querySelectorAll(".ed-selected").forEach((x) => x.classList.remove("ed-selected"));
+    el.classList.add("ed-selected");                       // stays until the panel lets go of it
     el.classList.add("ed-active");
     target.setAttribute("contenteditable", "true");
     target.focus();
@@ -84,6 +87,7 @@
       if (s) { s.classList.add("ed-hl"); s.scrollIntoView({ behavior: "smooth", block: "start" }); setTimeout(() => s.classList.remove("ed-hl"), 1600); }
     }
     else if (m.type === "scrollTo") { window.scrollTo(0, m.y || 0); }
+    else if (m.type === "unselect") { document.querySelectorAll(".ed-selected").forEach((x) => x.classList.remove("ed-selected")); }
     else if (m.type === "setHtml") { const el = byId(m.id); if (el) { el.innerHTML = m.html; if (el === active) original = m.html; } }
     else if (m.type === "restore") { const el = byId(m.id); if (el) { if (el === active) { active = null; target.removeAttribute("contenteditable"); target = null; el.classList.remove("ed-active"); } el.innerHTML = m.html; } }
   });
