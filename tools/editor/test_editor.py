@@ -358,6 +358,77 @@ def test_remove_element_takes_its_line_with_it():
         pg.remove_element(SMALL, 99)
 
 
+COLUMNS = """<!doctype html>
+<html><head><title>T</title></head>
+<body>
+  <main id="main">
+    <section class="section" aria-labelledby="b-title">
+      <h2 id="b-title">Beliefs</h2>
+      <div class="columns">
+        <div class="column"><h3>One</h3><p>Only here</p></div>
+        <div class="column">
+          <h3>Two</h3>
+        </div>
+      </div>
+    </section>
+  </main>
+</body></html>
+"""
+
+
+def _editable(text: str, wanted: str) -> int:
+    d = pg.Doc(text)
+    return next(k for k, n in enumerate(d.editables) if d.text_of(n) == wanted)
+
+
+def test_remove_element_takes_an_emptied_wrapper_with_it():
+    """The last element in a wrapper takes the wrapper, and its lines, with it: no empty box, no blank line."""
+    new = pg.remove_element(COLUMNS, _editable(COLUMNS, "Two"))
+    assert "Two" not in new and '<div class="column">\n' not in new                  # the three-line column is gone
+    assert new.count("\n") == COLUMNS.count("\n") - 3
+    assert '<div class="column"><h3>One</h3><p>Only here</p></div>\n      </div>\n    </section>' in new
+    emptied = pg.remove_element(new, _editable(new, "One"))
+    last = pg.remove_element(emptied, _editable(emptied, "Only here"))                  # empties the column, then the grid
+    assert "column" not in last and last.count("\n") == COLUMNS.count("\n") - 6
+    assert '<h2 id="b-title">Beliefs</h2>\n    </section>' in last                      # the section itself stays
+
+
+def test_remove_element_keeps_a_wrapper_that_still_holds_something():
+    new = pg.remove_element(COLUMNS, _editable(COLUMNS, "One"))
+    assert '<div class="column"><p>Only here</p></div>' in new and new.count("\n") == COLUMNS.count("\n")
+    d = pg.Doc(SMALL)
+    i = next(k for k, n in enumerate(d.editables) if n.attr("class") == "wordmark")
+    assert "<nav>" in pg.remove_element(SMALL, i)                                      # the header keeps its nav
+
+
+def test_remove_element_never_climbs_into_a_section_or_the_frame():
+    """A section under main, the header and the footer are the panel's to hide, never removed by emptying them."""
+    new = pg.remove_element(SMALL, _editable(SMALL, "Third"))
+    assert '<section class="three" hidden>\n    </section>' in new and new.count("\n") == SMALL.count("\n") - 1
+    new = pg.remove_element(SMALL, _editable(SMALL, "© 2026 Foundate LLC"))
+    assert "<footer></footer>" in new and new.count("\n") == SMALL.count("\n")
+    d = pg.Doc(new)
+    assert [i["label"] for i in d.summary()["sections"]][-1] == "Footer"                  # still listed by the panel
+
+
+def test_server_element_remove_takes_an_emptied_column_with_it(served):
+    """The About page's belief columns, through the API: removing a column's last text removes the column."""
+    root, call = served
+    about = root / "docs/about/index.html"
+    before = about.read_text()
+    d = pg.Doc(before)
+    column = d.find(lambda n: n.tag == "div" and n.attr("class") == "column")
+    texts = [d.text_of(c) for c in column.children]                                     # its h3 and p
+    assert texts and "column" in before
+    for t in texts:
+        code, r = call("/__api/element", {"path": "/about/", "index": _editable(about.read_text(), t), "action": "remove"})
+        assert code == 200 and r["changed"] == ["docs/about/index.html"], r
+    after = about.read_text()
+    assert '<div class="column"></div>' not in after and after.count("\n") == before.count("\n") - 1
+    assert after.count('class="column"') == before.count('class="column"') - 1
+    assert '<section class="section wrap" aria-labelledby="beliefs-title">' in after        # the section stays
+
+
 def test_move_element_swaps_neighbours():
     d = pg.Doc(SMALL)
     i = next(k for k, n in enumerate(d.editables) if n.attr("id") == "t1")

@@ -385,13 +385,37 @@ def move_section(text: str, index: int, delta: int) -> str:
             + text[a.start:a.end_end] + text[b.end_end:])
 
 
+def _managed(n: Node) -> bool:
+    """The page's frame, or something the panel's section list manages: never removed as an emptied wrapper."""
+    p = n.parent
+    if p is None or p.tag == "#root" or n.tag in ("html", "head", "body", "main"):
+        return True
+    if p.tag == "body" and n.tag in SHARED:
+        return True
+    return p.tag == "main"
+
+
 def remove_element(text: str, index: int) -> str:
-    """Remove editable element `index`. When it stood alone on its line(s), the line goes with it, so no
-    blank line is left behind."""
+    """Remove editable element `index`.
+
+    A wrapper the removal leaves holding nothing (no element, no text, only whitespace) goes with it, and so
+    does its own wrapper if that is emptied in turn, so removing the last belief in a column does not leave
+    an empty bordered box. The climb stops at the page's frame and at what the panel's section list manages
+    (main, body, the header, the footer and main's own children); those stay, however empty. A comment
+    counts as content and keeps its wrapper. Whatever is removed takes its own line(s) with it when it stood
+    alone on them, so no blank line is left behind.
+    """
     doc = Doc(text)
     if not 0 <= index < len(doc.editables):
         raise EditError("that element is not on the page any more; reload the preview")
     n = doc.editables[index]
+    while True:
+        p = n.parent
+        if p is None or _managed(p):
+            break
+        if (text[p.start_end:n.start] + text[n.end_end:p.end]).strip():   # the wrapper still holds something
+            break
+        n = p
     start, end = n.start, n.end_end
     line_start = text.rfind("\n", 0, start) + 1
     line_end = text.find("\n", end)
