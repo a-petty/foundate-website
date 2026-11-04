@@ -305,7 +305,7 @@ def set_text(text: str, index: int, before: str, after: str) -> str:
     cur = doc.inner(n)
     if normalize(cur) != normalize(before):
         raise EditError("the text on disk is not what the editor showed; reload the preview and try again")
-    new = after.strip()
+    new = re.sub(r'\s+contenteditable(?:="[^"]*")?', "", after).strip()   # editing state is never content
     if not strip_tags(new).strip():
         raise EditError("empty text; hide the section instead of blanking it")
     _check_fragment(new)
@@ -381,5 +381,39 @@ def move_section(text: str, index: int, delta: int) -> str:
     if not 0 <= j < len(sibs):
         raise EditError("already at the %s" % ("top" if delta < 0 else "bottom"))
     a, b = sorted((n, sibs[j]), key=lambda s: s.start)
+    return (text[:a.start] + text[b.start:b.end_end] + text[a.end_end:b.start]
+            + text[a.start:a.end_end] + text[b.end_end:])
+
+
+def remove_element(text: str, index: int) -> str:
+    """Remove editable element `index`. When it stood alone on its line(s), the line goes with it, so no
+    blank line is left behind."""
+    doc = Doc(text)
+    if not 0 <= index < len(doc.editables):
+        raise EditError("that element is not on the page any more; reload the preview")
+    n = doc.editables[index]
+    start, end = n.start, n.end_end
+    line_start = text.rfind("\n", 0, start) + 1
+    line_end = text.find("\n", end)
+    alone = text[line_start:start].strip() == "" and (line_end < 0 or text[end:line_end].strip() == "")
+    if alone:
+        return text[:line_start] + (text[line_end + 1:] if line_end >= 0 else "")
+    return text[:start] + text[end:]
+
+
+def move_element(text: str, index: int, delta: int) -> str:
+    """Swap editable element `index` with the element before it (delta -1) or after it (+1)."""
+    doc = Doc(text)
+    if not 0 <= index < len(doc.editables):
+        raise EditError("that element is not on the page any more; reload the preview")
+    n = doc.editables[index]
+    p = n.parent
+    if p is None or p.tag == "#root":
+        raise EditError("that element cannot move")
+    i = p.children.index(n)
+    j = i + delta
+    if not 0 <= j < len(p.children):
+        raise EditError("already %s in its block" % ("first" if delta < 0 else "last"))
+    a, b = sorted((n, p.children[j]), key=lambda s: s.start)
     return (text[:a.start] + text[b.start:b.end_end] + text[a.end_end:b.start]
             + text[a.start:a.end_end] + text[b.end_end:])
