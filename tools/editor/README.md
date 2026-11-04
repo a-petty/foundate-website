@@ -71,6 +71,9 @@ When something new is added to the site, give the editor a handle on it:
   (`--hero-tint` exists because the hero's tint was the one green the picker could not reach);
 - a block that might be hidden or reordered is a top-level `<section>` inside `<main>`, with
   `aria-labelledby` pointing at its heading, which is the name the panel shows.
+- text someone else will write (a partner's bio, a new paragraph) is added on a branch with
+  bracketed placeholder text, so they can replace it in place here and the branch's pull request
+  carries their words; the placeholder never reaches `main`.
 
 ## Tests
 
