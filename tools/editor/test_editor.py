@@ -371,13 +371,13 @@ def test_move_element_swaps_neighbours():
 def test_server_element_remove_and_move_everywhere(served):
     root, call = served
     about = root / "docs/about/index.html"
-    d = pg.Doc(about.read_text())
-    i = next(k for k, n in enumerate(d.editables) if d.text_of(n).startswith("He has spent most of his career"))
-    lines = about.read_text().count("\n")
+    before = about.read_text()
+    d = pg.Doc(before)
+    i = next(k for k, n in enumerate(d.editables) if n.attr("class") == "eyebrow")   # the first label, whatever it says
     code, r = call("/__api/element", {"path": "/about/", "index": i, "action": "remove"})
     assert code == 200 and r["changed"] == ["docs/about/index.html"], r
     t = about.read_text()
-    assert "He has spent most of his career" not in t and t.count("\n") == lines - 1
+    assert t.count('class="eyebrow"') == before.count('class="eyebrow"') - 1 and t.count("\n") == before.count("\n") - 1
     home = pg.Doc((root / "docs/index.html").read_text())                           # the closing call to action is on every page
     j = next(k for k, n in enumerate(home.editables) if n.attr("id") == "contact-title")
     code, r = call("/__api/element", {"path": "/", "index": j, "action": "down", "everywhere": True})
