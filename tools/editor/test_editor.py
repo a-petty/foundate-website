@@ -313,11 +313,13 @@ def test_server_sections_tokens_discard_commit(served):
     assert code == 200 and r["branch"].startswith("edit/") and len(r["sha"]) >= 7
     code, st = call("/__api/state")
     assert st["branch"] == r["branch"] and st["changed"] == []
+    home = root / "docs/index.html"
+    committed = home.read_text()
     code, r = call("/__api/section", {"path": "/", "index": 1, "action": "hide"})
-    assert code == 200 and " hidden>" in (root / "docs/index.html").read_text()
+    assert code == 200 and home.read_text() != committed and home.read_text().count(" hidden>") == committed.count(" hidden>") + 1
     code, st = call("/__api/discard", {})
     assert code == 200 and st["changed"] == []
-    assert " hidden>" not in (root / "docs/index.html").read_text()
+    assert home.read_text() == committed                                    # back to the committed page, whatever it holds
 
 
 def test_files_keep_their_line_endings(tmp_path):
