@@ -6,4 +6,4 @@ its link in the header and footer of every page, and add it to `docs/sitemap.xml
 
 | Page | Taken off | Why |
 | --- | --- | --- |
-| `work/` (foundate.ai/work/, every project with how it was proven) | 2026-11-04 | Alec: not happy with the page. Its two featured cases remain on the home page. |
+| `work/` (foundate.ai/work/, every project with how it was proven) | 2026-11-04 | Alec: not happy with the page. (The home page's own "What we built" section has been hidden since #21.) |
