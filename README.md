@@ -1,6 +1,6 @@
 # foundate.ai
 
-The Foundate AI website. One static page: no build step, no JavaScript, no
+The Foundate website. One static page: no build step, no JavaScript, no
 third-party services. Pushing to `main` publishes it.
 
 ## Layout

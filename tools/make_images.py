@@ -56,9 +56,10 @@ mono_font = ImageFont.truetype(str(MONO), 21 * SS)
 x = 72 * SS
 plinth(d, x, 66 * SS, 84 * SS, GREEN)
 d.text((x, 206 * SS), "Foundate", font=name_font, fill=INK, anchor="la")
-d.text((x, 354 * SS), "AI you can sign off on.", font=head_font, fill=INK, anchor="la")
+for i, line in enumerate(("We build the strong foundation", "necessary for AI transformation.")):
+    d.text((x, (346 + i * 72) * SS), line, font=head_font, fill=INK, anchor="la")
 foot_y = 548 * SS
-tracked(d, (x, foot_y), "AI IMPLEMENTATION, PROVEN BEFORE IT SHIPS", mono_font, MUTED, 1.3 * SS)
+tracked(d, (x, foot_y), "AI IMPLEMENTATION", mono_font, MUTED, 1.3 * SS)
 right = "FOUNDATE.AI"
 rw = sum(d.textlength(c, font=mono_font) + 1.3 * SS for c in right)
 tracked(d, (OG_W * SS - x - rw, foot_y), right, mono_font, MUTED, 1.3 * SS)
