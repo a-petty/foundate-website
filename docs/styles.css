@@ -219,7 +219,7 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 }
 
 /* Where the value is */
-.value{padding-top:var(--section-pad)}
+.value{padding-block:var(--section-pad)}
 .value .h2{max-width:900px;margin-bottom:48px}
 .tiers{display:flex;flex-wrap:wrap;gap:20px;align-items:stretch}
 .tier{flex:1 1 260px;min-width:0;border:1px solid var(--line);border-radius:var(--radius);padding:30px;background:var(--surface);display:flex;flex-direction:column;gap:12px}
