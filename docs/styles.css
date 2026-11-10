@@ -174,9 +174,9 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 
 /* Where we build */
 .where{padding-top:clamp(64px,8vw,104px)}
-.where-inner{display:flex;flex-wrap:wrap;gap:20px 64px;align-items:baseline;padding-bottom:clamp(48px,6vw,72px);border-bottom:1px solid var(--line)}
-.where h2{flex:1 1 420px;min-width:0;font-family:var(--display);font-size:clamp(28px,3vw,40px);font-weight:600;line-height:1.1;letter-spacing:-.012em}
-.where p{flex:1 1 460px;min-width:0;color:var(--ink-2)}
+.where-inner{padding-bottom:clamp(48px,6vw,72px);border-bottom:1px solid var(--line)}
+.where .h2{max-width:980px;margin-bottom:24px}
+.where .lede{max-width:720px;margin-bottom:48px}
 
 /* Engagements */
 .engage{padding-top:clamp(64px,8vw,112px)}
