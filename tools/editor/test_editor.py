@@ -267,7 +267,7 @@ def test_server_state_pages_and_preview(served):
     assert [p["path"] for p in st["pages"]][:3] == ["/", "/how-we-work/", "/about/"]
     assert st["pages"][1]["label"] == "How we work"
     code, page = call("/__api/page?path=/")
-    assert code == 200 and page["sections"][1]["label"].startswith("AI transformation")
+    assert code == 200 and page["sections"][1]["anchor"] == "top" and page["sections"][1]["label"]   # the hero, whatever it says
     code, html = call("/?__edit=1")
     assert code == 200 and 'data-ed="0"' in html and "/__editor/overlay.js" in html
     code, plain = call("/")
