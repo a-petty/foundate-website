@@ -224,7 +224,7 @@ def test_real_stylesheet_tokens():
     assert t["--green"]["value"] == "#1e4d3b" and t["--green"]["uses"] > 5
     assert t["--size-h2"]["kind"] == "clamp" and t["--size-h2"]["uses"] >= 1
     assert t["--text"]["kind"] == "px" and t["--section-pad"]["uses"] >= 2
-    assert t["--hero-tint"]["kind"] == "rgb" and t["--hero-tint"]["uses"] == 1
+    assert t["--hero-tint"]["kind"] == "rgb" and t["--hero-tint"]["uses"] == 6
     assert tk.kind_of("30, 77, 59") == "rgb" and tk.kind_of('"Zilla Slab",serif') == "font"
 
 
