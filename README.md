@@ -10,7 +10,7 @@ GitHub Pages publishes only the `docs/` folder. Everything else in the repo
 
 | Path | What it is |
 | --- | --- |
-| `docs/index.html` | Home: hero, where the value is, two featured cases, ownership, contact. |
+| `docs/index.html` | Home: hero, where the value is, two featured cases (hidden since 2026-11-03), contact. |
 | `docs/how-we-work/index.html` | How we work (foundate.ai/how-we-work/): lessons, what you keep, where we build, engagements. |
 | `docs/about/index.html` | About (foundate.ai/about/): why we exist, beliefs, how we are built, the two Managing Partners, the name. |
 | `docs/styles.css` | All styles; design tokens at the top. |
