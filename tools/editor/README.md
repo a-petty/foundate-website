@@ -68,7 +68,7 @@ carry them.
 When something new is added to the site, give the editor a handle on it:
 
 - a colour or size that might be tuned later is a token in `:root`, not a literal inside a rule
-  (`--hero-tint` exists because the hero's tint was the one green the picker could not reach);
+  (`--hero-tint` is the home hero's green, its own token so the picker can reach it);
 - a block that might be hidden or reordered is a top-level `<section>` inside `<main>`, with
   `aria-labelledby` pointing at its heading, which is the name the panel shows.
 - text someone else will write (a partner's bio, a new paragraph) is added on a branch with
