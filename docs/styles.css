@@ -108,7 +108,8 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 .hero--photo{position:relative;display:flex;align-items:center;padding:0;background:var(--green);color:var(--paper)}
 @media (min-width:1100px){.hero--photo{aspect-ratio:2000/717}}
 .hero-photo{position:absolute;inset:0;background:var(--green) url("assets/hero.jpg") center/cover no-repeat}
-.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(var(--hero-tint),.94) 0%,rgba(var(--hero-tint),.84) 46%,rgba(var(--hero-tint),.4) 76%,rgba(var(--hero-tint),.22) 100%)}
+/* One tint for every photo band (home hero and page heads): solid green at the left edge so each page starts on the same colour, then the same fade. */
+.hero-photo::after,.page-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgb(var(--hero-tint)) 0%,rgba(var(--hero-tint),.84) 46%,rgba(var(--hero-tint),.4) 76%,rgba(var(--hero-tint),.22) 100%)}
 .hero--photo .hero-copy{position:relative;width:100%;padding-block:clamp(56px,7vw,72px)}
 .hero--photo .lede{margin-bottom:0}
 .credit{flex-basis:100%;font-size:12px;line-height:1.5;color:var(--muted)}
@@ -121,7 +122,7 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 .hero--photo .button:hover{background:#fff;color:var(--green)}
 .hero--photo .text-link{color:var(--paper)}
 .hero--photo a:focus-visible{outline-color:var(--paper)}
-@media (max-width:640px){.hero-photo::after{background:linear-gradient(180deg,rgba(var(--hero-tint),.9) 0%,rgba(var(--hero-tint),.82) 100%)}}
+@media (max-width:640px){.hero-photo::after,.page-photo::after{background:linear-gradient(180deg,rgba(var(--hero-tint),.9) 0%,rgba(var(--hero-tint),.82) 100%)}}
 
 /* Generic section scaffolding */
 .section{padding-block:var(--section-pad)}
@@ -131,11 +132,13 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 
 /* Lessons */
 .lessons .h2{max-width:980px;margin-bottom:56px}
-.columns{display:flex;flex-wrap:wrap;gap:40px}
-.column{flex:1 1 280px;min-width:0;border-top:2px solid var(--ink);padding-top:22px}
-.column-num{font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:14px}
-.column h3{font-size:23px;font-weight:600;letter-spacing:-.015em;line-height:1.25;margin-bottom:12px}
+/* Each column shares the row tracks (number, heading, text), so headings and text start level across a row whatever a heading's length. */
+.columns{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:40px}
+.column{display:grid;grid-template-rows:subgrid;grid-row:span 3;row-gap:0;min-width:0;border-top:2px solid var(--ink);padding-top:22px}
+.column-num{grid-row:1;font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:14px}
+.column h3{grid-row:2;font-size:21px;font-weight:600;letter-spacing:-.015em;line-height:1.25;margin-bottom:12px}
 .column p{color:var(--ink-2)}
+.column h3 + p{grid-row:3}
 
 /* Work */
 .work{background:var(--band)}
@@ -182,8 +185,8 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 .engage{padding-top:clamp(64px,8vw,112px)}
 .engage .h2{max-width:900px;margin-bottom:22px}
 .engage-lede{max-width:720px;font-size:var(--text-lede);color:var(--ink-2);margin-bottom:52px}
-.cards{display:flex;flex-wrap:wrap;gap:20px}
-.card{flex:1 1 300px;min-width:0;border:1px solid var(--line);border-radius:var(--radius);padding:30px;background:var(--surface);display:flex;flex-direction:column;gap:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:20px}
+.card{display:grid;grid-template-rows:subgrid;grid-row:span 3;row-gap:14px;min-width:0;border:1px solid var(--line);border-radius:var(--radius);padding:30px;background:var(--surface)}
 .card-step{font-family:var(--mono);font-size:13px;color:var(--muted)}
 .card h3{font-size:24px;font-weight:600;letter-spacing:-.015em}
 .card p{font-size:16px;color:var(--ink-2)}
@@ -257,6 +260,16 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 }
 .page-head + .section{padding-top:clamp(16px,2vw,32px)}
 
+/* Green page head (How we work, About): the home hero's green band, with each page's own photograph under the same tint. */
+.page-head--photo{position:relative;padding:0;background:var(--green);color:var(--paper)}
+.page-photo{position:absolute;inset:0;background:var(--green) center/cover no-repeat}
+.page-photo--how{background-image:url("assets/head-how.jpg");background-position:center 55%}
+.page-photo--about{background-image:url("assets/head-about.jpg");background-position:center 20%}
+.page-head-copy{position:relative;padding-block:clamp(56px,7vw,96px)}
+.page-head--photo .eyebrow{color:var(--green-soft)}
+.page-head--photo .page-title{color:var(--paper)}
+.page-head--photo .lede{color:#dfe8e1}
+.page-head--photo + .section{padding-top:var(--section-pad)}
 /* About page */
 .statement{background:var(--surface);border-block:1px solid var(--line)}
 .statement-inner{display:flex;flex-wrap:wrap;gap:32px 64px;padding-block:clamp(64px,8vw,112px)}
@@ -265,6 +278,12 @@ a:focus-visible{outline:3px solid var(--focus);outline-offset:4px;border-radius:
 .method .statement-title{color:var(--paper)}
 .statement-body{flex:1 1 520px;min-width:0;display:flex;flex-direction:column;gap:18px;color:var(--ink-2)}
 .statement-body--night{color:var(--green-soft)}
+/* Side by side, the text starts level with the title, not with the eyebrow above it. */
+@media (min-width:1100px){
+  .statement-inner{display:grid;grid-template-columns:380px minmax(0,1fr);gap:0 64px;align-items:start}
+  .statement-head{display:contents}
+  .statement-head .eyebrow{grid-column:1 / -1}
+}
 .beliefs-title,.partners-title{max-width:900px;margin-bottom:48px}
 .partners{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
 .partner{flex:1 1 440px;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(28px,3.4vw,44px)}

@@ -16,6 +16,8 @@ GitHub Pages publishes only the `docs/` folder. Everything else in the repo
 | `docs/styles.css` | All styles; design tokens at the top. |
 | `docs/assets/fonts/` | Zilla Slab (headlines and wordmark), IBM Plex Sans (text, one variable file) and IBM Plex Mono (data), Latin subsets, self-hosted under the SIL Open Font License (`OFL.txt`). No third-party font service. |
 | `docs/assets/hero.jpg` | Home-page hero: "Golden Gate Bridge and San Francisco skyline from Hawk Hill at Blue Hour" by Daniel L. Lu, Wikimedia Commons, CC BY-SA 4.0, extended about 10% at the top and bottom (edge rows stretched and blurred, no generated pixels). The footer carries the required credit, and this adaptation is itself CC BY-SA 4.0. |
+| `docs/assets/head-how.jpg` | How we work page head: "San Francisco at dusk" by Podstawko, Wikimedia Commons, CC BY-SA 4.0, scaled to 1920 wide; cropped and tinted in CSS. The page footer carries the required credit, and this adaptation is itself CC BY-SA 4.0. |
+| `docs/assets/head-about.jpg` | About page head: "Bay Bridge from the Embarcadero" by Ed Schipul, Wikimedia Commons, CC BY 2.0, scaled to 1920 wide; cropped and tinted in CSS. The page footer carries the required credit. |
 | `docs/assets/og-image.jpg` | 1200×630 social preview used by LinkedIn, Slack, iMessage, etc. |
 | `docs/assets/apple-touch-icon.png`, `favicon-32.png`, `icon-*.png` | Icons. The SVG favicon is inline in `index.html`. |
 | `docs/404.html` | Not-found page. Self-contained so it renders at any path. |
